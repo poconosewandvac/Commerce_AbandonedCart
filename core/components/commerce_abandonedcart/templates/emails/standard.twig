@@ -1,0 +1,42 @@
+{% extends "emails/wrapper.twig" %}
+
+{% block subject %}{{ lex('commerce.email.order_rcvd.subject', { name: config.site_name, id: order.reference }) }}{% endblock %}
+{% block hidden_preheader %}{{ lex('commerce.email.order_rcvd.preheader', { name: config.site_name, id: order.reference }) }}{% endblock %}
+{% block content %}
+
+<h1>Looks like you forgot to complete your order!</h1>
+
+<table class="c-order-details-table c-order-items">
+    <thead>
+        <tr>
+            <th>{{ lex('commerce.quantity') }}</th>
+            <th>{{ lex('commerce.product') }}</th>
+            <th>{{ lex('commerce.total_ex_tax') }}</th>
+            <th>{{ lex('commerce.tax') }}</th>
+            <th>{{ lex('commerce.total') }}</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for item in items %}
+        <tr>
+            <td class="c-order-item-quantity">{{ item.quantity }}</td>
+            <td class="c-order-item-name">{{ item.name }}</td>
+            <td class="c-order-item-ex-tax">{{ item.total_ex_tax_formatted }}</td>
+            <td class="c-order-item-tax">{{ item.tax_formatted }}</td>
+            <td class="c-order-item-tax">{{ item.total_formatted }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+    <tfoot>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+            <td>{{ order.total_ex_tax_formatted }}</td>
+            <td>{{ order.tax_formatted }}</td>
+            <td>{{ order.total_formatted }}</td>
+        </tr>
+    </tfoot>
+</table>
+
+{% endblock %}

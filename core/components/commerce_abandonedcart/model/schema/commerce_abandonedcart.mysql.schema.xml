@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="commerce_abandonedcart" baseClass="comSimpleObject" platform="mysql" defaultEngine="MyISAM" version="1.1">
+    <object class="AbandonedCartUser" table="commerce_abandoned_cart_user" extends="comSimpleObject">
+        <field key="user" dbtype="int" precision="10" phptype="int" null="false" default="0" />
+        <field key="email" dbtype="varchar" precision="320" phptype="string" null="false" />
+        <field key="subscribed" dbtype="tinyint" precision="1" phptype="boolean" null="false" default="1" />
+
+        <aggregate alias="User" class="modUser" local="user" foreign="id" cardinality="one" owner="foreign" />
+    </object>
+
+    <object class="AbandonedCartOrder" table="commerce_abandoned_cart_order" extends="comSimpleObject">
+        <field key="user" dbtype="int" precision="10" phptype="int" null="false" />
+        <field key="order" dbtype="int" precision="10" phptype="int" null="false" />
+        <field key="msg_count" dbtype="int" precision="10" phptype="int" null="false" default="0" />
+        <field key="converted" dbtype="tinyint" precision="1" phptype="boolean" null="false" default="0" />
+
+        <field key="added_on" dbtype="int" precision="10" phptype="int" null="false" />
+        <field key="converted_on" dbtype="int" precision="10" phptype="int" null="true" />
+
+        <aggregate alias="User" class="AbandonedCartUser" local="user" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Order" class="comOrder" local="order" foreign="id" cardinality="one" owner="foreign" />
+    </object>
+</model>
