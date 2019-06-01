@@ -8,24 +8,24 @@ switch($options[xPDOTransport::PACKAGE_ACTION]) {
         $success = true;
         $modx->log(xPDO::LOG_LEVEL_INFO, 'Checking if server meets the minimum requirements...');
 
-        // Check for MODX 2.5.2 or higher
+        // Check for MODX 2.7.0 or higher
         $level = xPDO::LOG_LEVEL_INFO;
         $modxVersion = $modx->getVersionData();
-        if (version_compare($modxVersion['full_version'], '2.5.2') < 0) {
+        if (version_compare($modxVersion['full_version'], '2.7.0') < 0) {
             $level = xPDO::LOG_LEVEL_ERROR;
             $success = false;
         }
-        $modx->log($level, '- MODX Revolution 2.5.2+: ' . $modxVersion['full_version']);
+        $modx->log($level, '- MODX Revolution 2.7.0+: ' . $modxVersion['full_version']);
 
-        // Check for PHP 5.5 or higher
+        // Check for PHP 7.0 or higher
         $level = xPDO::LOG_LEVEL_INFO;
-        if (version_compare(PHP_VERSION, '5.5.0') < 0) {
+        if (version_compare(PHP_VERSION, '7.0.0') < 0) {
             $level = xPDO::LOG_LEVEL_ERROR;
             $success = false;
         }
-        $modx->log($level, '- PHP version 5.5+: ' . PHP_VERSION);
+        $modx->log($level, '- PHP version 7.0+: ' . PHP_VERSION);
 
-        // Check for Commerce 0.11 +
+        // Check for Commerce 1.0.0+
         $corePath = $modx->getOption('commerce.core_path', null, $modx->getOption('core_path') . 'components/commerce/');
         $corePath .= 'model/commerce/';
         $installed = true;
@@ -39,12 +39,12 @@ switch($options[xPDOTransport::PACKAGE_ACTION]) {
         }
         $modx->log($level, '- Commerce installed: ' . ($installed ? 'yes' : 'no'));
         if ($commerce instanceof Commerce) {
-            $installed = version_compare((string)$commerce->version, '0.11.0-rc1', '>=');
+            $installed = version_compare((string)$commerce->version, '1.0.0-pl', '>=');
             $level = $installed ? xPDO::LOG_LEVEL_INFO : xPDO::LOG_LEVEL_ERROR;
             if (!$installed) {
                 $success = false;
             }
-            $modx->log($level, '- Commerce version 0.11+: ' . (string)$commerce->version);
+            $modx->log($level, '- Commerce version 1.0.0+: ' . (string)$commerce->version);
         }
 
 
