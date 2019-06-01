@@ -1,6 +1,7 @@
 <?php
 
 $_lang['commerce_abandonedcart'] = 'Abandoned Cart';
+$_lang['commerce_abandonedcarts'] = 'Abandoned Carts';
 $_lang['commerce_abandonedcart.description'] = 'Automatically send messages to customers who have abandoned their cart.';
 
 // Module configuration
@@ -20,3 +21,13 @@ $_lang['commerce_abandonedcart.send_time_invalid'] = 'Invalid send time. Enter i
 $_lang['commerce_abandonedcart.send_time_desc'] = 'Enter in PHP strtotime format (ex. +1 day). Relative to when the abandoned cart was created.';
 $_lang['commerce_abandonedcart.tpl'] = 'Template';
 $_lang['commerce_abandonedcart.tpl_desc'] = 'Twig template path (starting with abandonedcart/).';
+
+// Admin
+$_lang['commerce_abandonedcart.customer'] = 'Customer';
+$_lang['commerce_abandonedcart.customers'] = 'Customers';
+$_lang['commerce_abandonedcart.search_by_customer'] = 'Search by Customer';
+$_lang['commerce_abandonedcart.msg_count'] = 'Message Count';
+$_lang['commerce_abandonedcart.converted'] = 'Converted';
+$_lang['commerce_abandonedcart.not_converted'] = 'Not Converted';
+$_lang['commerce_abandonedcart.converted_on'] = 'Converted On';
+$_lang['commerce_abandonedcart.added_on'] = 'Added On';

@@ -2,6 +2,8 @@
 
 namespace PoconoSewVac\AbandonedCart\Modules;
 
+use modmore\Commerce\Events\Admin\GeneratorEvent;
+use modmore\Commerce\Events\Admin\TopNavMenu as TopNavMenuEvent;
 use modmore\Commerce\Modules\BaseModule;
 use modmore\Commerce\Admin\Widgets\Form\DescriptionField;
 use modmore\Commerce\Admin\Widgets\Form\SelectField;
@@ -59,6 +61,8 @@ class AbandonedCart extends BaseModule {
         $loader = $this->commerce->twig->getLoader();
         $loader->addLoader(new FilesystemLoader($root . '/templates/'));
 
+        $dispatcher->addListener(\Commerce::EVENT_DASHBOARD_INIT_GENERATOR, [$this, 'loadPages']);
+        $dispatcher->addListener(\Commerce::EVENT_DASHBOARD_GET_MENU, [$this, 'loadMenuItem']);
         $dispatcher->addListener(\Commerce::EVENT_ORDER_ADDRESS_ADDED, [$this, 'addAbandonedCart']);
 
         // Determine which event to use for converted on
@@ -83,7 +87,7 @@ class AbandonedCart extends BaseModule {
         // Get the abandoned cart user
         $user = $this->abandonedCart->getUser($order);
         if (!$user) {
-            $user = $this->abandonedCart->addUser($order);
+            $this->abandonedCart->addUser($order);
         }
 
         // Make sure abandoned cart does not already exist for this order
@@ -123,7 +127,7 @@ class AbandonedCart extends BaseModule {
     /**
      * Remove the abandoned cart by marking it as converted
      *
-     * @param comOrder $event
+     * @param \comOrder $event
      * @return void
      */
     public function removeAbandonedCart(\comOrder $order)
@@ -134,6 +138,41 @@ class AbandonedCart extends BaseModule {
             $abandonedCartOrder->markConverted();
             $abandonedCartOrder->save();
         }
+    }
+
+    public function loadPages(GeneratorEvent $event)
+    {
+        $generator = $event->getGenerator();
+        $generator->addPage('abandonedcarts', '\PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Overview');
+        // $generator->addPage('abandonedcarts/customers', '\modmore\Commerce\Admin\Modules\Customers\Guests');
+    }
+
+    public function loadMenuItem(TopNavMenuEvent $event)
+    {
+        $items = $event->getItems();
+
+        $items = $this->insertInArray($items, ['abandonedcarts' => [
+            'name' => $this->adapter->lexicon('commerce_abandonedcarts'),
+            'key' => 'abandonedcarts',
+            'icon' => 'icon icon-shopping-cart',
+            'link' => $this->adapter->makeAdminUrl('abandonedcarts'),
+            'submenu' => [
+                [
+                    'name' => $this->adapter->lexicon('commerce_abandonedcarts'),
+                    'key' => 'abandonedcarts',
+                    'icon' => 'icon shopping-cart',
+                    'link' => $this->adapter->makeAdminUrl('abandonedcarts')
+                ],
+                /*[
+                    'name' => $this->adapter->lexicon('commerce_abandonedcarts.customers'),
+                    'key' => 'abandonedcarts/customers',
+                    'icon' => 'icon icon-user',
+                    'link' => $this->adapter->makeAdminUrl('abandonedcarts/customers')
+                ]*/
+            ]
+        ]], 3);
+
+        $event->setItems($items);
     }
 
     public function getModuleConfiguration(\comModule $module)
@@ -167,5 +206,9 @@ class AbandonedCart extends BaseModule {
         ]);
 
         return $fields;
+    }
+
+    private function insertInArray($array, $values, $offset) {
+        return array_slice($array, 0, $offset, true) + $values + array_slice($array, $offset, NULL, true);
     }
 }
