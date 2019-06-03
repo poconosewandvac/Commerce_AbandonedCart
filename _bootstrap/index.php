@@ -106,6 +106,12 @@ $modulePath = $componentPath . '/core/components/commerce_abandonedcart/src/Modu
 
 // Instruct Commerce to load modules from our directory, providing the base namespace and module path twice
 $commerce->loadModulesFromDirectory($modulePath, 'PoconoSewVac\\AbandonedCart\\Modules\\', $modulePath);
+$manager = $modx->getManager();
+
+$modx->addPackage('commerce_abandonedcart', $componentPath . '/core/components/commerce_abandonedcart/model/');
+
+$manager->createObjectContainer('AbandonedCartOrder');
+$manager->createObjectContainer('AbandonedCartUser');
 
 // Clear the cache
 $modx->cacheManager->refresh();

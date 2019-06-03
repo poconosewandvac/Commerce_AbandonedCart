@@ -115,7 +115,7 @@ class Grid extends GridWidget
         return $toolbar;
     }
 
-    public function prepareItem($abandonedCart)
+    public function prepareItem(\AbandonedCartOrder $abandonedCart)
     {
         $item = $abandonedCart->toArray('', false, true);
 

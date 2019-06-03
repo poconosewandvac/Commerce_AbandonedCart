@@ -80,7 +80,10 @@ EOD;
 EOD;
 
 $generator->parseSchema($sources['schema'] . 'commerce_abandonedcart.mysql.schema.xml', $sources['model']);
+$modx->addPackage('commerce_abandonedcart', $sources['model']);
 
+$manager->createObjectContainer('AbandonedCartOrder');
+$manager->createObjectContainer('AbandonedCartUser');
 
 $mtime= microtime();
 $mtime= explode(" ", $mtime);
