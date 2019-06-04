@@ -53,7 +53,7 @@ class AbandonedCart extends BaseModule {
 
         // Load AbandonedCart
         $this->adapter->loadClass('commerce_abandonedcart.AbandonedCartModel', $path, true, true);
-        $abandonedCart = new \AbandonedCartModel($this->commerce);
+        $this->abandonedCart = new \AbandonedCartModel($this->commerce);
 
         // Add template path to twig
         /** @var ChainLoader $loader */
@@ -144,6 +144,8 @@ class AbandonedCart extends BaseModule {
     {
         $generator = $event->getGenerator();
         $generator->addPage('abandonedcarts', '\PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Overview');
+        $generator->addPage('abandonedcarts/delete', '\PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Delete');
+
         // $generator->addPage('abandonedcarts/customers', '\modmore\Commerce\Admin\Modules\Customers\Guests');
     }
 

@@ -14,20 +14,39 @@ class Grid extends GridWidget
     {
         $items = [];
 
-        $c = $this->adapter->newQuery('AbandonedCartOrder');
+        $q = $this->adapter->newQuery('AbandonedCartOrder');
+        $q->leftJoin('comOrder', 'Order', ['Order.id = AbandonedCartOrder.order']);
+        $q->leftJoin('comOrderAddress', 'Address', ['Address.order = Order.id']);
+
+        if (array_key_exists('converted', $options) && strlen($options['converted']) > 0) {
+            $q->where([
+                'AbandonedCartOrder.converted' => (bool) $options['converted'],
+            ]);
+        }
+
         if (array_key_exists('search_by_customer', $options) && strlen($options['search_by_customer']) > 0) {
-            $c->where([
-                'name:LIKE' => '%' . $options['search_by_customer'] . '%'
+            $addressSearch = $options['search_by_customer'];
+            $q->where([
+                'Address.fullname:LIKE' => "%{$addressSearch}%",
+                'OR:Address.firstname:LIKE' => "%{$addressSearch}%",
+                'OR:Address.lastname:LIKE' => "%{$addressSearch}%",
+                'OR:Address.company:LIKE' => "%{$addressSearch}%",
+                'OR:Address.address1:LIKE' => "%{$addressSearch}%",
+                'OR:Address.address2:LIKE' => "%{$addressSearch}%",
+                'OR:Address.address3:LIKE' => "%{$addressSearch}%",
+                'OR:Address.zip:LIKE' => "%{$addressSearch}%",
+                'OR:Address.city:LIKE' => "%{$addressSearch}%",
+                'OR:Address.state:LIKE' => "%{$addressSearch}%",
             ]);
         }
 
         // Get the total count for pagination
-        $count = $this->adapter->getCount('AbandonedCartOrder', $c);
+        $count = $this->adapter->getCount('AbandonedCartOrder', $q);
         $this->setTotalCount($count);
 
         // Set the current page limit and load the object
-        $c->limit($options['limit'], $options['start']);
-        $collection = $this->adapter->getCollection('AbandonedCartOrder', $c);
+        $q->limit($options['limit'], $options['start']);
+        $collection = $this->adapter->getCollection('AbandonedCartOrder', $q);
         foreach ($collection as $object) {
             $items[] = $this->prepareItem($object);
         }

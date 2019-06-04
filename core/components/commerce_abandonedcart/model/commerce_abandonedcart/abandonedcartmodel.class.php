@@ -56,14 +56,18 @@ class AbandonedCartModel
      */
     public function getUser(\comOrder $order)
     {
+        /** @var \comOrderAddress $address */
         $address = $order->getBillingAddress();
         $email = $address->get('email');
         $user = $order->get('user');
 
-        return $this->adapter->getObject('AbandonedCartUser', [
-            'user' => $user,
-            'email' => $email
+        $q = $this->adapter->newQuery('AbandonedCartUser');
+        $q->where([
+            ['user:=' => $user],
+            ['OR:email:=' => $email]
         ]);
+
+        return $this->adapter->getObject('AbandonedCartUser', $q);
     }
 
     /**
@@ -87,6 +91,7 @@ class AbandonedCartModel
      */
     public function addUser(\comOrder $order)
     {
+        /** @var \comOrderAddress $address */
         $address = $order->getBillingAddress();
 
         $user = $this->adapter->newObject('AbandonedCartUser');
@@ -105,6 +110,13 @@ class AbandonedCartModel
      */
     public function addOrder(\comOrder $order)
     {
+        /** @var \AbandonedCartUser $user */
+        $user = $this->getUser($order);
+        // Don't add orders for user's who are unsubscribed
+        if ($user && !$user->isSubscribed()) {
+            return;
+        }
+
         $abandonedCartOrder = $this->adapter->newObject('AbandonedCartOrder');
         $abandonedCartOrder->fromArray([
             'user' => $order->get('user'),
