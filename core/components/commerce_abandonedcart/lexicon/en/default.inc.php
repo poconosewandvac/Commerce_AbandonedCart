@@ -23,6 +23,9 @@ $_lang['commerce_abandonedcart.tpl'] = 'Template';
 $_lang['commerce_abandonedcart.tpl_desc'] = 'Twig template path (starting with abandonedcart/).';
 
 // Admin
+$_lang['commerce_abandonedcart.customer_type'] = 'Customer Type';
+$_lang['commerce_abandonedcart.guest'] = 'Guest';
+$_lang['commerce_abandonedcart.registered'] = 'Registered';
 $_lang['commerce_abandonedcart.customer'] = 'Customer';
 $_lang['commerce_abandonedcart.customers'] = 'Customers';
 $_lang['commerce_abandonedcart.search_by_customer'] = 'Search by Customer';
@@ -31,3 +34,4 @@ $_lang['commerce_abandonedcart.converted'] = 'Converted';
 $_lang['commerce_abandonedcart.not_converted'] = 'Not Converted';
 $_lang['commerce_abandonedcart.converted_on'] = 'Converted On';
 $_lang['commerce_abandonedcart.added_on'] = 'Added On';
+$_lang['commerce_abandonedcart.delete_abandoned_cart'] = 'Delete Abandoned Cart';

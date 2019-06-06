@@ -1,0 +1,178 @@
+{% extends "admin/widgets/grid.twig" %}
+
+{% block tableClasses %}ui small compact table{% endblock %}
+{% block render_item %}
+    <tr class="commerce-grid-row commerce-order-grid-row" id="commerce-grid-row-record-{{ item.id }}" tabindex="0">
+
+        <td colspan="7">
+            <div class="ui stackable padded grid">
+                <div class="five wide column commerce-order-grid-meta">
+                    <h3>
+                        <a href="{{ item.detail_url }}" class="commerce-ajax-fullpage">
+                            <a href="{{ item.detail_url }}" class="commerce-ajax-fullpage">
+                                {{ lex('commerce_abandonedcart') }}
+                                <span> &middot; {{ lex('commerce.id') }} {{ item.id }}</span>
+                            </a>
+                        </a>
+                    </h3>
+
+                    <p class="commerce-order-grid-meta-labels">
+                        {% if item.abandoned_cart.converted %}
+                            <span class="ui basic green label"><i class="icon icon-check"></i> {{ lex('commerce_abandonedcart.converted') }}</span>
+                        {% else %}
+                            <span class="ui basic red label"><i class="icon icon-times"></i> {{ lex('commerce_abandonedcart.not_converted') }}</span>
+                        {% endif %}
+                    </p>
+
+                    <div class="ui list commerce-order-grid-meta">
+                        <div class="item">
+                            <div class="ui grid">
+                                <div class="eight wide column muted commerce-order-grid-meta-label">
+                                    {{ lex('commerce_abandonedcart.added_on') }}
+                                </div>
+                                <div class="eight wide column commerce-order-grid-meta-value">
+                                    {{ item.abandoned_cart.added_on|smart_date }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="ui grid">
+                                <div class="eight wide column muted commerce-order-grid-meta-label">
+                                    {{ lex('commerce_abandonedcart.msg_count') }}
+                                </div>
+                                <div class="eight wide column commerce-order-grid-meta-value">
+                                    {{ item.abandoned_cart.msg_count }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="five wide column commerce-order-grid-customer">
+
+                    <p class="commerce-order-grid-shipping">
+                        {{ lex('commerce.shipping_method') }}:
+                        <span class="commerce-order-grid-shipping-method">{{ item.shipping_method }}</span>
+                    </p>
+
+                    <div class="commerce-order-grid-address">
+                        {% if item.shipping_address %}
+                            {{ item.shipping_address|format_address }}
+                        {% elseif item.properties.expected_address %}
+                            {{ item.properties.expected_address|format_address }}
+                            <p class="is_expected">{{ lex('commerce.is_expected_address') }}</p>
+                        {% else %}
+                            <p class="is_expected">{{ lex('commerce.no_address_yet') }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="six wide column commerce-order-grid-items">
+                    <table class="ui table">
+                        <tbody>
+                        {% set moreQuantity = 0 %}
+                        {% set moreValue = 0 %}
+                        {% set currency = '' %}
+                        {% for orderItem in item.items %}
+                            {% if items|length < 4 or loop.index < 4 %}
+                                <tr>
+                                    <td>{{ orderItem.quantity }}x</td>
+                                    <td>{{ orderItem.name }}</td>
+                                    <td style="text-align: right"><nobr>{{ orderItem.total_formatted }}</nobr></td>
+                                </tr>
+                            {% else %}
+                                {% set moreQuantity = moreQuantity + orderItem.quantity %}
+                                {% set moreValue = moreValue + orderItem.total %}
+                                {% set currency = orderItem.currency %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if moreQuantity > 0 %}
+                            <tr>
+                                <td></td>
+                                <td><em>{{ lex('commerce.order.plus_x_items', {quantity: moreQuantity}) }}</em></td>
+                                <td style="text-align: right"><nobr>{{ moreValue|format_currency(currency) }}</nobr></td>
+                            </tr>
+                        {% endif %}
+                        {% for shipment in item.shipments %}
+                            {% if shipment.fee != 0 %}
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>{{ shipment.method.name }}</td>
+                                    <td style="text-align: right"><nobr>{{ shipment.fee_incl_tax_formatted }}</nobr></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="2" style="text-align: right; font-weight: bold; border-top: 1px solid #ccc;">{{ lex('commerce.total') }}</td>
+                            <td style="font-weight: bold; border-top: 1px solid #ccc; text-align: right"><nobr>{{ item.total_formatted }}</nobr></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                    <div class="ui right horizontal list commerce-order-grid-meta-list">
+                        {% if item.discount != 0 %}
+                            <div class="item">
+                                <span class="commerce-order-grid-meta-label">
+                                    {{ lex('commerce.discount') }}:
+                                </span>
+                                <span class="commerce-order-grid-meta-value">
+                                    {{ item.discount_formatted }}
+                                </span>
+                            </div>
+                        {% endif %}
+                        {% if item.tax != 0 %}
+                            <div class="item">
+                                <span class="commerce-order-grid-meta-label">
+                                    {{ lex('commerce.tax') }}:
+                                </span>
+                                <span class="commerce-order-grid-meta-value">
+                                    {{ item.tax_formatted }}
+                                </span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="ui basic secondary segment commerce-order-grid-actions">
+                {% if item.actions|length >= 1 %}
+                    <div class="ui small secondary buttons">
+                        {% for action in item.actions %}
+                            <a class="ui simple icon basic button {% if action.modal %}commerce-ajax-modal{% else %}commerce-ajax-fullpage{% endif %}"
+                               {% if action.url|length > 0 %}href="{{ action.url }}"{% endif %}
+                                    {% if action.callback %}onclick="Commerce.Modal.callback({{ item.id }}); return false;"{% endif %}
+                                    {% if action.new_window or action.newWindow %}target="_blank"{% endif %}
+                                    {% if action.modal_title or action.modalTitle %}data-modal-title="{{ action.modal_title|default(action.modalTitle) }}"{% endif %}
+                               tabindex="0"
+                            >
+                                {% if action.icon %}<i class="icon {{ action.icon }}"></i>{% endif %}
+                                {{ action.title }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if item.status_changes|length >= 1 %}
+                    <span class="commerce-order-grid-statuschanges-label">
+                            {{ lex('commerce.change_status') }}
+                        </span>
+
+                    <div class="ui small secondary buttons commerce-order-grid-statuschanges">
+                        {% for action in item.status_changes %}
+                            <a class="ui simple icon basic button {% if action.modal %}commerce-ajax-modal{% else %}commerce-ajax-fullpage{% endif %}"
+                               {% if action.url|length > 0 %}href="{{ action.url }}"{% endif %}
+                                    {% if action.callback %}onclick="Commerce.Modal.callback({{ item.id }}); return false;"{% endif %}
+                                    {% if action.new_window or action.newWindow %}target="_blank"{% endif %}
+                                    {% if action.modal_title or action.modalTitle %}data-modal-title="{{ action.modal_title|default(action.modalTitle) }}"{% endif %}
+                               tabindex="0"
+                            >
+                                {% if action.icon %}<i class="icon {{ action.icon }}"></i>{% endif %}
+                                {{ action.title }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </td>
+    </tr>
+{% endblock %}
