@@ -6,6 +6,10 @@ use modmore\Commerce\Admin\Widgets\GridWidget;
 use modmore\Commerce\Admin\Util\Action;
 use modmore\Commerce\Admin\Util\Column;
 
+/**
+ * Class Grid
+ * @package PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart
+ */
 class Grid extends GridWidget
 {
     public $key = 'abandonedcarts';
@@ -16,6 +20,7 @@ class Grid extends GridWidget
         $items = [];
 
         $q = $this->adapter->newQuery('AbandonedCartOrder');
+        $q->where(['AbandonedCartOrder.removed' => 0]);
         $q->leftJoin('comOrder', 'Order', ['Order.id = AbandonedCartOrder.order']);
         $q->leftJoin('comOrderAddress', 'Address', ['Address.order = Order.id']);
 

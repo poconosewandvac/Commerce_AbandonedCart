@@ -1,26 +1,21 @@
 <?php
 
-namespace PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart;
+namespace PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Customers;
 
 use modmore\Commerce\Admin\Sections\SimpleSection;
 use modmore\Commerce\Admin\Page;
 use modmore\Commerce\Admin\Widgets\DeleteFormWidget;
 use modmore\Commerce\Admin\Widgets\TextWidget;
 
-/**
- * Class Delete
- * @package PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart
- */
 class Delete extends Page
 {
-    public $key = 'abandonedcarts/delete';
+    public $key = 'abandonedcarts/customers/delete';
     public $title = 'commerce.delete';
-
 
     public function setUp()
     {
         $abandonedCartId = (int)$this->getOption('id', 0);
-        $abandonedCart = $this->adapter->getObject('AbandonedCartOrder', ['id' => $abandonedCartId]);
+        $abandonedCart = $this->adapter->getObject('AbandonedCartUser', ['id' => $abandonedCartId]);
 
         $section = new SimpleSection($this->commerce, [
             'title' => $this->title
@@ -31,11 +26,11 @@ class Delete extends Page
                 'title' => 'commerce.delete'
             ]);
             $widget->setRecord($abandonedCart);
-            $widget->setClassKey('AbandonedCartOrder');
-            $widget->setFormAction($this->adapter->makeAdminUrl('abandonedcarts/delete', ['id' => $abandonedCart->get('id')]));
+            $widget->setClassKey('AbandonedCartUser');
+            $widget->setFormAction($this->adapter->makeAdminUrl('abandonedcarts/customers/delete', ['id' => $abandonedCart->get('id')]));
             $widget->setUp();
         } else {
-            $widget = (new TextWidget($this->commerce, ['text' => 'Abandoned cart not found.']))->setUp();
+            $widget = (new TextWidget($this->commerce, ['text' => 'Abandoned cart user not found.']))->setUp();
         }
 
         $section->addWidget($widget);

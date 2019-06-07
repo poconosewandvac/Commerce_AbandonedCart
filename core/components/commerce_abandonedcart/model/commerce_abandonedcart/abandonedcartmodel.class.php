@@ -96,7 +96,7 @@ class AbandonedCartModel
 
         $user = $this->adapter->newObject('AbandonedCartUser');
         $user->fromArray([
-            'user' => $order->get('id'),
+            'user' => $order->get('user'),
             'email' => $address->get('email')
         ]);
         $user->save();

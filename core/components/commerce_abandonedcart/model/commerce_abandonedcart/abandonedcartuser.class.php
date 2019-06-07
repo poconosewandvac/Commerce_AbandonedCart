@@ -11,6 +11,8 @@
  */
 class AbandonedCartUser extends comSimpleObject
 {
+    use \modmore\Commerce\Traits\SoftDelete;
+
     /**
      * Get the send to
      *
@@ -32,7 +34,7 @@ class AbandonedCartUser extends comSimpleObject
     }
 
     /**
-     * Undocumented function
+     * Determines if user is subscribed
      *
      * @return boolean
      */

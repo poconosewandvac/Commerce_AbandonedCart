@@ -13,7 +13,7 @@ $_lang['commerce_abandonedcart.converted_on_method_payment_received'] = 'Payment
 $_lang['commerce_abandonedcart.add_scheduled_message'] = 'Add Scheduled Message';
 $_lang['commerce_abandonedcart.schedule'] = 'Schedule';
 $_lang['commerce_abandonedcart.none_scheduled'] = 'No messages are scheduled. Add a new scheduled message below!';
-$_lang['commerce_abandonedcart.schedule_desc'] = 'Schedule when abandoned cart messages should be sent out. This is from the time the user clicks "Checkout".';
+$_lang['commerce_abandonedcart.schedule_desc'] = 'Schedule when abandoned cart messages should be sent out. This is from the time the user enters an address.';
 $_lang['commerce_abandonedcart.subject'] = 'Subject';
 $_lang['commerce_abandonedcart.subject_desc'] = 'Message subject the customer sees.';
 $_lang['commerce_abandonedcart.send_time'] = 'Send Time';
@@ -23,15 +23,24 @@ $_lang['commerce_abandonedcart.tpl'] = 'Template';
 $_lang['commerce_abandonedcart.tpl_desc'] = 'Twig template path (starting with abandonedcart/).';
 
 // Admin
+$_lang['commerce_abandonedcart.subscription_status'] = 'Subscription Status';
+$_lang['commerce_abandonedcart.subscribed'] = 'Subscribed';
+$_lang['commerce_abandonedcart.unsubscribed'] = 'Unsubscribed';
+$_lang['commerce_abandonedcart.email'] = 'Email';
 $_lang['commerce_abandonedcart.customer_type'] = 'Customer Type';
 $_lang['commerce_abandonedcart.guest'] = 'Guest';
 $_lang['commerce_abandonedcart.registered'] = 'Registered';
 $_lang['commerce_abandonedcart.customer'] = 'Customer';
 $_lang['commerce_abandonedcart.customers'] = 'Customers';
+$_lang['commerce_abandonedcart.carts'] = 'Carts';
 $_lang['commerce_abandonedcart.search_by_customer'] = 'Search by Customer';
+$_lang['commerce_abandonedcart.search_by_email'] = 'Search by Email';
 $_lang['commerce_abandonedcart.msg_count'] = 'Message Count';
 $_lang['commerce_abandonedcart.converted'] = 'Converted';
 $_lang['commerce_abandonedcart.not_converted'] = 'Not Converted';
 $_lang['commerce_abandonedcart.converted_on'] = 'Converted On';
 $_lang['commerce_abandonedcart.added_on'] = 'Added On';
 $_lang['commerce_abandonedcart.delete_abandoned_cart'] = 'Delete Abandoned Cart';
+$_lang['commerce_abandonedcart.update_customer'] = 'Update Customer';
+$_lang['commerce_abandonedcart.delete_customer'] = 'Delete Customer';
+

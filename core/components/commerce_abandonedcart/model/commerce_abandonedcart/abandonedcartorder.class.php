@@ -11,6 +11,8 @@
  */
 class AbandonedCartOrder extends comSimpleObject
 {
+    use \modmore\Commerce\Traits\SoftDelete;
+
     /**
      * Gets the abandoned cart user
      *

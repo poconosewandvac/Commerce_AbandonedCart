@@ -79,6 +79,10 @@ EOD;
 
 EOD;
 
+// Load Commerce to parse Commerce classes
+$commercePath = $modx->getOption('commerce.core_path', null, $modx->getOption('core_path') . 'components/commerce/') . 'model/commerce/';
+$commerce = $modx->getService('commerce', 'Commerce', $commercePath, ['mode' => $modx->getOption('commerce.mode')]);
+
 $generator->parseSchema($sources['schema'] . 'commerce_abandonedcart.mysql.schema.xml', $sources['model']);
 $modx->addPackage('commerce_abandonedcart', $sources['model']);
 

@@ -53,7 +53,11 @@ class AbandonedCart extends BaseModule {
 
         // Load AbandonedCart
         $this->adapter->loadClass('commerce_abandonedcart.AbandonedCartModel', $path, true, true);
-        $this->abandonedCart = new \AbandonedCartModel($this->commerce);
+
+        // Prevent errors from occuring during module install
+        if (class_exists('\AbandonedCartModel')) {
+            $this->abandonedCart = new \AbandonedCartModel($this->commerce);
+        }
 
         // Add template path to twig
         /** @var ChainLoader $loader */
@@ -143,10 +147,13 @@ class AbandonedCart extends BaseModule {
     public function loadPages(GeneratorEvent $event)
     {
         $generator = $event->getGenerator();
+
         $generator->addPage('abandonedcarts', '\PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Overview');
         $generator->addPage('abandonedcarts/delete', '\PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Delete');
 
-        // $generator->addPage('abandonedcarts/customers', '\modmore\Commerce\Admin\Modules\Customers\Guests');
+        $generator->addPage('abandonedcarts/customers', '\PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Customers\Overview');
+        $generator->addPage('abandonedcarts/customers/update', '\PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Customers\Update');
+        $generator->addPage('abandonedcarts/customers/delete', '\PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Customers\Delete');
     }
 
     public function loadMenuItem(TopNavMenuEvent $event)
@@ -160,17 +167,17 @@ class AbandonedCart extends BaseModule {
             'link' => $this->adapter->makeAdminUrl('abandonedcarts'),
             'submenu' => [
                 [
-                    'name' => $this->adapter->lexicon('commerce_abandonedcarts'),
+                    'name' => $this->adapter->lexicon('commerce_abandonedcart.carts'),
                     'key' => 'abandonedcarts',
-                    'icon' => 'icon shopping-cart',
-                    'link' => $this->adapter->makeAdminUrl('abandonedcarts')
+                    'icon' => 'icon icon-shopping-cart',
+                    'link' => $this->adapter->makeAdminUrl('abandonedcarts'),
                 ],
-                /*[
-                    'name' => $this->adapter->lexicon('commerce_abandonedcarts.customers'),
+                [
+                    'name' => $this->adapter->lexicon('commerce_abandonedcart.customers'),
                     'key' => 'abandonedcarts/customers',
                     'icon' => 'icon icon-user',
                     'link' => $this->adapter->makeAdminUrl('abandonedcarts/customers')
-                ]*/
+                ]
             ]
         ]], 3);
 
