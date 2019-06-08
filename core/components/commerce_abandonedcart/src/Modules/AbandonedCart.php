@@ -94,7 +94,6 @@ class AbandonedCart extends BaseModule {
      */
     public function addAbandonedCart(\modmore\Commerce\Events\Address $event)
     {
-        $this->adapter->log(1, 'testtjsjhgsfjhgfdjhugfdsjondsgfohijudsfjgoiu');
         $order = $event->getOrder();
         if (!$order) {
             return;
