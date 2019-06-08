@@ -117,7 +117,7 @@ class AbandonedCart extends BaseModule {
 
         $this->cartRepository->addFromOrder($order);
         $order->log($this->adapter->lexicon('commerce_abandonedcart.added_abandonedcart', [
-            'id' => $abandonedCartOrder->get('id'),
+            'id' => $order->get('id'),
         ]), false);
     }
 
