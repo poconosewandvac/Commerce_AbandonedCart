@@ -5,10 +5,11 @@ namespace PoconoSewVac\AbandonedCart\Modules;
 use modmore\Commerce\Events\Admin\GeneratorEvent;
 use modmore\Commerce\Events\Admin\TopNavMenu as TopNavMenuEvent;
 use modmore\Commerce\Modules\BaseModule;
-use modmore\Commerce\Admin\Widgets\Form\DescriptionField;
 use modmore\Commerce\Admin\Widgets\Form\SelectField;
 use PoconoSewVac\AbandonedCart\Admin\Widgets\Form\MessageScheduleField;
 use PoconoSewVac\AbandonedCart\Admin\Widgets\Form\Validation\MessageScheduleTime;
+use PoconoSewVac\AbandonedCart\Repositories\CartRepository;
+use PoconoSewVac\AbandonedCart\Repositories\UserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use modmore\Commerce\Frontend\Steps\ThankYou;
 use Twig\Loader\ChainLoader;
@@ -22,8 +23,23 @@ require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
  */
 class AbandonedCart extends BaseModule {
 
-    /** @var \AbandonedCart $abandonedCart */
-    protected $abandonedCart;
+    /** @var CartRepository $cartRepository */
+    protected $cartRepository;
+
+    /** @var UserRepository $userRepository */
+    protected $userRepository;
+
+    /**
+     * AbandonedCart constructor.
+     * @param \Commerce $commerce
+     */
+    public function __construct(\Commerce $commerce)
+    {
+        parent::__construct($commerce);
+
+        $this->cartRepository = new CartRepository($commerce);
+        $this->userRepository = new UserRepository($commerce);
+    }
 
     public function getName()
     {
@@ -51,14 +67,6 @@ class AbandonedCart extends BaseModule {
         $path = $root . '/model/';
         $this->adapter->loadPackage('commerce_abandonedcart', $path);
 
-        // Load AbandonedCart
-        $this->adapter->loadClass('commerce_abandonedcart.AbandonedCartModel', $path, true, true);
-
-        // Prevent errors from occuring during module install
-        if (class_exists('\AbandonedCartModel')) {
-            $this->abandonedCart = new \AbandonedCartModel($this->commerce);
-        }
-
         // Add template path to twig
         /** @var ChainLoader $loader */
         $root = dirname(__DIR__, 2);
@@ -72,9 +80,9 @@ class AbandonedCart extends BaseModule {
         // Determine which event to use for converted on
         $markConvertedOn = constant($this->getConfig('converted_on_method'));
         if ($markConvertedOn === \Commerce::EVENT_CHECKOUT_AFTER_STEP) {
-            $dispatcher->addListener(\Commerce::EVENT_CHECKOUT_AFTER_STEP, [$this, 'removeAbandonedCartThankYou']);
+            $dispatcher->addListener(\Commerce::EVENT_CHECKOUT_AFTER_STEP, [$this, 'convertAbandonedCartThankYou']);
         } else if ($markConvertedOn === \Commerce::EVENT_ORDER_PAYMENT_RECEIVED) {
-            $dispatcher->addListener(\Commerce::EVENT_ORDER_PAYMENT_RECEIVED, [$this, 'removeAbandonedCartPaymentReceived']);
+            $dispatcher->addListener(\Commerce::EVENT_ORDER_PAYMENT_RECEIVED, [$this, 'convertAbandonedCartPaymentReceived']);
         }
     }
 
@@ -86,46 +94,32 @@ class AbandonedCart extends BaseModule {
      */
     public function addAbandonedCart(\modmore\Commerce\Events\Address $event)
     {
+        $this->adapter->log(1, 'testtjsjhgsfjhgfdjhugfdsjondsgfohijudsfjgoiu');
         $order = $event->getOrder();
-        
-        // Get the abandoned cart user
-        $user = $this->abandonedCart->getUser($order);
-        if (!$user) {
-            $this->abandonedCart->addUser($order);
-        }
-
-        // Make sure abandoned cart does not already exist for this order
-        $abandonedCartOrder = $this->abandonedCart->getOrder($order);
-        if ($abandonedCartOrder) return;
-
-        $this->abandonedCart->addOrder($order);
-    }
-
-    /**
-     * Remove abandoned cart on payment received
-     *
-     * @param \modmore\Commerce\Events\Payment $event
-     * @return void
-     */
-    protected function removeAbandonedCartPaymentReceived(\modmore\Commerce\Events\Payment $event)
-    {
-        $this->removeAbandonedCart($event->getOrder());
-    }
-
-    /**
-     * Remove abandoned cart on thank-you step
-     *
-     * @param \modmore\Commerce\Events\Checkout $event
-     * @return void
-     */
-    protected function removeAbandonedCartThankYou(\modmore\Commerce\Events\Checkout $event)
-    {
-        $step = $event->getStep();
-        if (!($step instanceof ThankYou)) {
+        if (!$order) {
             return;
         }
 
-        $this->removeAbandonedCart($event->getOrder());
+        // Get the abandoned cart user
+        $user = $this->userRepository->getByOrder($order);
+        if (!$user) {
+            $this->userRepository->addFromOrder($order);
+        }
+
+        // Make sure user is not unsubscribed
+        if ($user && !$user->isSubscribed()) {
+            return;
+        }
+
+        // Make sure abandoned cart does not already exist for this order
+        /** @var \AbandonedCartOrder $abandonedCartOrder */
+        $abandonedCartOrder = $this->cartRepository->getByOrder($order);
+        if ($abandonedCartOrder) return;
+
+        $this->cartRepository->addFromOrder($order);
+        $order->log($this->adapter->lexicon('commerce_abandonedcart.added_abandonedcart', [
+            'id' => $abandonedCartOrder->get('id'),
+        ]), false);
     }
 
     /**
@@ -134,26 +128,60 @@ class AbandonedCart extends BaseModule {
      * @param \comOrder $event
      * @return void
      */
-    public function removeAbandonedCart(\comOrder $order)
+    public function convertAbandonedCart(\comOrder $order)
     {
-        $abandonedCartOrder = $this->abandonedCart->getOrder($order);
-        if ($abandonedCartOrder) {
-            // Mark as converted, since the order is completed
-            $abandonedCartOrder->markConverted();
-            $abandonedCartOrder->save();
+        /** @var \AbandonedCartOrder $abandonedCartOrder */
+        $abandonedCartOrder = $this->cartRepository->getByOrder($order);
+        if (!$abandonedCartOrder) {
+            return;
         }
+
+        // Mark as converted, since the order is completed
+        $abandonedCartOrder->markConverted();
+        $abandonedCartOrder->save();
+
+        $order->log($this->adapter->lexicon('commerce_abandonedcart.converted_abandonedcart', [
+            'id' => $abandonedCartOrder->get('id'),
+        ]), false);
+    }
+
+    /**
+     * Remove abandoned cart on payment received
+     *
+     * @param \modmore\Commerce\Events\Payment $event
+     * @return void
+     */
+    protected function convertAbandonedCartPaymentReceived(\modmore\Commerce\Events\Payment $event)
+    {
+        $this->convertAbandonedCart($event->getOrder());
+    }
+
+    /**
+     * Remove abandoned cart on thank-you step
+     *
+     * @param \modmore\Commerce\Events\Checkout $event
+     * @return void
+     */
+    protected function convertAbandonedCartThankYou(\modmore\Commerce\Events\Checkout $event)
+    {
+        $step = $event->getStep();
+        if (!($step instanceof ThankYou)) {
+            return;
+        }
+
+        $this->convertAbandonedCart($event->getOrder());
     }
 
     public function loadPages(GeneratorEvent $event)
     {
         $generator = $event->getGenerator();
 
-        $generator->addPage('abandonedcarts', '\PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Overview');
-        $generator->addPage('abandonedcarts/delete', '\PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Delete');
+        $generator->addPage('abandonedcarts', \PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Overview::class);
+        $generator->addPage('abandonedcarts/delete', \PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Delete::class);
 
-        $generator->addPage('abandonedcarts/customers', '\PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Customers\Overview');
-        $generator->addPage('abandonedcarts/customers/update', '\PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Customers\Update');
-        $generator->addPage('abandonedcarts/customers/delete', '\PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Customers\Delete');
+        $generator->addPage('abandonedcarts/customers', \PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Customers\Overview::class);
+        $generator->addPage('abandonedcarts/customers/update', \PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Customers\Update::class);
+        $generator->addPage('abandonedcarts/customers/delete', \PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Customers\Delete::class);
     }
 
     public function loadMenuItem(TopNavMenuEvent $event)

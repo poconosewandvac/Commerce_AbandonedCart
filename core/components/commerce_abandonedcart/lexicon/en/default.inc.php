@@ -44,3 +44,7 @@ $_lang['commerce_abandonedcart.delete_abandoned_cart'] = 'Delete Abandoned Cart'
 $_lang['commerce_abandonedcart.update_customer'] = 'Update Customer';
 $_lang['commerce_abandonedcart.delete_customer'] = 'Delete Customer';
 
+// Logs
+$_lang['commerce_abandonedcart.added_abandonedcart'] = 'Added abandoned cart with ID [[+id]].';
+$_lang['commerce_abandonedcart.convertd_abandonedcart'] = 'Converted abandoned cart with ID [[+id]].';
+

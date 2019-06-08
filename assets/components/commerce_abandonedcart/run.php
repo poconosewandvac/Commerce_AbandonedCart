@@ -26,5 +26,3 @@ $commerce = $modx->getService('commerce', 'Commerce', $commercePath, ['mode' => 
 // Load AbandonedCart
 $corePath = $modx->getOption('commerce_abandonedcart.core_path', null, $modx->getOption('core_path') . 'components/commerce_abandonedcart');
 require_once $corePath . 'model/commerce_abandonedcart/abandonedcart.class.php';
-
-$abandonedCart = new AbandonedCartModel($commerce);
