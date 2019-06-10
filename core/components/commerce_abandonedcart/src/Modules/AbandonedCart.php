@@ -4,6 +4,7 @@ namespace PoconoSewVac\AbandonedCart\Modules;
 
 use modmore\Commerce\Events\Admin\GeneratorEvent;
 use modmore\Commerce\Events\Admin\TopNavMenu as TopNavMenuEvent;
+use modmore\Commerce\Events\Reports;
 use modmore\Commerce\Modules\BaseModule;
 use modmore\Commerce\Admin\Widgets\Form\SelectField;
 use PoconoSewVac\AbandonedCart\Admin\Widgets\Form\MessageScheduleField;
@@ -75,6 +76,7 @@ class AbandonedCart extends BaseModule {
 
         $dispatcher->addListener(\Commerce::EVENT_DASHBOARD_INIT_GENERATOR, [$this, 'loadPages']);
         $dispatcher->addListener(\Commerce::EVENT_DASHBOARD_GET_MENU, [$this, 'loadMenuItem']);
+        $dispatcher->addListener(\Commerce::EVENT_DASHBOARD_REPORTS_GET_REPORTS, [$this, 'addReports']);
         $dispatcher->addListener(\Commerce::EVENT_ORDER_ADDRESS_ADDED, [$this, 'addAbandonedCart']);
 
         // Determine which event to use for converted on
@@ -84,6 +86,11 @@ class AbandonedCart extends BaseModule {
         } else if ($markConvertedOn === \Commerce::EVENT_ORDER_PAYMENT_RECEIVED) {
             $dispatcher->addListener(\Commerce::EVENT_ORDER_PAYMENT_RECEIVED, [$this, 'convertAbandonedCartPaymentReceived']);
         }
+    }
+
+    public function addReports(Reports $event)
+    {
+        $event->addReport(new \PoconoSewVac\AbandonedCart\Reports\Users($this->commerce));
     }
 
     /**

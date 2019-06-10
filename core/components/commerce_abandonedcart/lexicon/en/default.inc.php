@@ -24,6 +24,7 @@ $_lang['commerce_abandonedcart.tpl_desc'] = 'Twig template path (starting with a
 
 // Admin
 $_lang['commerce_abandonedcart.subscription_status'] = 'Subscription Status';
+$_lang['commerce_abandonedcart.all'] = 'All';
 $_lang['commerce_abandonedcart.subscribed'] = 'Subscribed';
 $_lang['commerce_abandonedcart.unsubscribed'] = 'Unsubscribed';
 $_lang['commerce_abandonedcart.email'] = 'Email';
@@ -47,4 +48,9 @@ $_lang['commerce_abandonedcart.delete_customer'] = 'Delete Customer';
 // Logs
 $_lang['commerce_abandonedcart.added_abandonedcart'] = 'Added abandoned cart with ID [[+id]].';
 $_lang['commerce_abandonedcart.convertd_abandonedcart'] = 'Converted abandoned cart with ID [[+id]].';
+
+// Reports
+$_lang['commerce_abandonedcart.user_report'] = 'Abandoned Cart Customers';
+$_lang['commerce_abandonedcart.user_report_desc'] = 'Export a list of abandoned cart customers.';
+
 
