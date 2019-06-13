@@ -36,4 +36,20 @@
         <aggregate alias="User" class="AbandonedCartUser" local="user" foreign="id" cardinality="one" owner="foreign" />
         <aggregate alias="Order" class="comOrder" local="order" foreign="id" cardinality="one" owner="foreign" />
     </object>
+
+    <object class="AbandonedCartSchedule" table="commerce_abandoned_cart_schedule" extends="comSimpleObject">
+        <field key="from" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="subject" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="content" dbtype="text" precision="255" phptype="string" null="false" default="" />
+        <field key="send_time" dbtype="varchar" precision="50" phptype="string" null="false" default="" />
+        <field key="conditions" dbtype="text" phptype="array" null="true" default=""/>
+
+        <!-- Soft remove -->
+        <field key="removed" dbtype="tinyint" precision="1" phptype="boolean" null="false" default="0" />
+        <field key="removed_on" formatter="datetime" dbtype="int" precision="20" phptype="int" null="false" default="0" />
+        <field key="removed_by" dbtype="tinyint" precision="1" phptype="boolean" null="false" default="0" />
+        <index alias="removed" name="removed" primary="false" unique="false" type="BTREE">
+            <column key="removed" length="" collation="A" null="false" />
+        </index>
+    </object>
 </model>

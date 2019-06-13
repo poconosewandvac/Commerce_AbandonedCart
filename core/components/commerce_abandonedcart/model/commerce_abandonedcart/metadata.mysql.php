@@ -5,5 +5,6 @@ $xpdo_meta_map = array (
   array (
     0 => 'AbandonedCartUser',
     1 => 'AbandonedCartOrder',
+    2 => 'AbandonedCartSchedule',
   ),
 );

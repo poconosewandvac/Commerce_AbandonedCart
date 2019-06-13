@@ -88,6 +88,7 @@ $modx->addPackage('commerce_abandonedcart', $sources['model']);
 
 $manager->createObjectContainer('AbandonedCartOrder');
 $manager->createObjectContainer('AbandonedCartUser');
+$manager->createObjectContainer('AbandonedCartSchedule');
 
 $mtime= microtime();
 $mtime= explode(" ", $mtime);
