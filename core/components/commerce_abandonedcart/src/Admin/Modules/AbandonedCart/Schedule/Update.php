@@ -1,22 +1,22 @@
 <?php
 
-namespace PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Customers;
+namespace PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Schedule;
 
 use modmore\Commerce\Admin\Sections\SimpleSection;
 use modmore\Commerce\Admin\Page;
 
 /**
  * Class Update
- * @package PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Customers
+ * @package PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Schedule
  */
 class Update extends Page {
-    public $key = 'abandonedcarts/customers/update';
-    public $title = 'commerce_abandonedcart.update_customer';
+    public $key = 'abandonedcarts/schedule/update';
+    public $title = 'commerce_abandonedcart.update_message';
 
     public function setUp()
     {
         $objectId = (int)$this->getOption('id', 0);
-        $exists = $this->adapter->getCount('AbandonedCartUser', ['id' => $objectId, 'removed' => false]);
+        $exists = $this->adapter->getCount('AbandonedCartSchedule', ['id' => $objectId, 'removed' => false]);
 
         if ($exists) {
             $section = new Section($this->commerce, [

@@ -1,0 +1,76 @@
+<div class="horizontal field {% if field.hasErrors() %}error{% endif %} commerce-field-condition">
+    <label for="{{ field.key }}-{{ field.name }}-date">{{ field.label }}</label>
+    {% set idx = 0 %}
+    <div class="field-item-row-container">
+        {% for item in field.getValueAsArray() %}
+            <div class="field-item-row">
+                <div class="three fields">
+                    <div class="field condition-field">
+                        <label for="{{ field.key }}-{{ field.name }}-field-{{ idx }}">{{ lex('commerce.condition_field') }}</label>
+                        <input id="{{ field.key }}-{{ field.name }}-field-{{ idx }}" name="{{ field.name }}[{{ idx }}][field]" type="text" value="{{ item.field }}">
+                    </div>
+                    <div class="field condition-condition">
+                        <label for="{{ field.key }}-{{ field.name }}-condition-{{ idx }}">{{ lex('commerce.condition') }}</label>
+                        <select id="{{ field.key }}-{{ field.name }}-condition-{{ idx }}" name="{{ field.name }}[{{ idx }}][condition]" class="ui dropdown">
+                            <option value="" data-show-value="false"></option>
+                            <option value="always" data-show-value="false" {% if item.condition == 'always' %}selected="selected"{% endif %}>{{ lex('commerce.condition.always') }}</option>
+                            <option value="never" data-show-value="false" {% if item.condition == 'never' %}selected="selected"{% endif %}>{{ lex('commerce.condition.never') }}</option>
+                            <option value="equals" data-show-value="true" {% if item.condition == 'equals' %}selected="selected"{% endif %}>{{ lex('commerce.condition.equals') }}</option>
+                            <option value="not equals" data-show-value="true" {% if item.condition == 'not equals' %}selected="selected"{% endif %}>{{ lex('commerce.condition.not_equals') }}</option>
+                            <option value="in" data-show-value="true" {% if item.condition == 'in' %}selected="selected"{% endif %}>{{ lex('commerce.condition.in') }}</option>
+                            <option value="not in" data-show-value="true" {% if item.condition == 'not in' %}selected="selected"{% endif %}>{{ lex('commerce.condition.not_in') }}</option>
+                            <option value="empty" data-show-value="false" {% if item.condition == 'empty' %}selected="selected"{% endif %}>{{ lex('commerce.condition.empty') }}</option>
+                            <option value="not empty" data-show-value="false" {% if item.condition == 'not empty' %}selected="selected"{% endif %}>{{ lex('commerce.condition.not_empty') }}</option>
+                            <option value="greater than" data-show-value="true" {% if item.condition == 'greater than' %}selected="selected"{% endif %}>{{ lex('commerce.condition.greater_than') }}</option>
+                            <option value="less than" data-show-value="true" {% if item.condition == 'less than' %}selected="selected"{% endif %}>{{ lex('commerce.condition.less_than') }}</option>
+                            <option value="in european union" data-show-value="false" {% if item.condition == 'in european union' %}selected="selected"{% endif %}>{{ lex('commerce.condition.in_european_union') }}</option>
+                            <option value="not in european union" data-show-value="false" {% if item.condition == 'not in european union' %}selected="selected"{% endif %}>{{ lex('commerce.condition.not_in_european_union') }}</option>
+                        </select>
+                    </div>
+                    <div class="field condition-value">
+                        <label for="{{ field.key }}-{{ field.name }}-value-{{ idx }}">{{ lex('commerce.condition_value') }}</label>
+                        <input id="{{ field.key }}-{{ field.name }}-value-{{ idx }}" name="{{ field.name }}[{{ idx }}][value]" type="text" value="{{ item.value }}">
+                    </div>
+                </div>
+            </div>
+            {% set idx = idx + 1 %}
+        {% endfor %}
+
+        {% for i in 1..1 %}
+            <div class="field-item-row">
+                <div class="three fields">
+                    <div class="field condition-field">
+                        <label for="{{ field.key }}-{{ field.name }}-field-{{ idx + i }}">{{ lex('commerce.condition_field') }}</label>
+                        <input id="{{ field.key }}-{{ field.name }}-field-{{ idx + i }}" name="{{ field.name }}[{{ idx + i }}][field]" type="text" value="{{ item.field }}">
+                    </div>
+                    <div class="field condition-condition">
+                        <label for="{{ field.key }}-{{ field.name }}-condition-{{ idx + i }}">{{ lex('commerce.condition') }}</label>
+                        <select id="{{ field.key }}-{{ field.name }}-condition-{{ idx + i }}" name="{{ field.name }}[{{ idx + i }}][condition]">
+                            <option value="" data-show-value="false"></option>
+                            <option value="always" data-show-value="false">{{ lex('commerce.condition.always') }}</option>
+                            <option value="never" data-show-value="false">{{ lex('commerce.condition.never') }}</option>
+                            <option value="equals" data-show-value="true">{{ lex('commerce.condition.equals') }}</option>
+                            <option value="not equals" data-show-value="true">{{ lex('commerce.condition.not_equals') }}</option>
+                            <option value="in" data-show-value="true">{{ lex('commerce.condition.in') }}</option>
+                            <option value="not in" data-show-value="true">{{ lex('commerce.condition.not_in') }}</option>
+                            <option value="empty" data-show-value="true">{{ lex('commerce.condition.empty') }}</option>
+                            <option value="not empty" data-show-value="true">{{ lex('commerce.condition.not_empty') }}</option>
+                            <option value="greater than" data-show-value="true">{{ lex('commerce.condition.greater_than') }}</option>
+                            <option value="less than" data-show-value="true">{{ lex('commerce.condition.less_than') }}</option>
+                            <option value="in european union" data-show-value="false">{{ lex('commerce.condition.in_european_union') }}</option>
+                            <option value="not in european union" data-show-value="false">{{ lex('commerce.condition.not_in_european_union') }}</option>
+                        </select>
+                    </div>
+                    <div class="field condition-value">
+                        <label for="{{ field.key }}-{{ field.name }}-value-{{ idx + i }}">{{ lex('commerce.condition_value') }}</label>
+                        <input id="{{ field.key }}-{{ field.name }}-value-{{ idx + i }}" name="{{ field.name }}[{{ idx + i }}][value]" type="text" value="{{ item.value }}">
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if field.description %}<p class="help">{{ field.description }}</p>{% endif %}
+
+    {% include "admin/widgets/fields/_errors.twig" %}
+</div>

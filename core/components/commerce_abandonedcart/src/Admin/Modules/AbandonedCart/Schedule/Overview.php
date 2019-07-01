@@ -1,18 +1,18 @@
 <?php
 
-namespace PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart;
+namespace PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Schedule;
 
 use modmore\Commerce\Admin\Page;
 use modmore\Commerce\Admin\Sections\SimpleSection;
 
 /**
  * Class Overview
- * @package PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart
+ * @package PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Schedule
  */
 class Overview extends Page
 {
-    public $key = 'abandonedcarts';
-    public $title = 'Abandoned Carts';
+    public $key = 'abandonedcarts/schedule';
+    public $title = 'Abandoned Carts Schedule';
 
     public function setUp()
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart;
+namespace PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Schedule;
 
 use modmore\Commerce\Admin\Sections\SimpleSection;
 use modmore\Commerce\Admin\Page;
@@ -9,18 +9,17 @@ use modmore\Commerce\Admin\Widgets\TextWidget;
 
 /**
  * Class Delete
- * @package PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart
+ * @package PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Schedule
  */
 class Delete extends Page
 {
-    public $key = 'abandonedcarts/delete';
+    public $key = 'abandonedcarts/schedule/delete';
     public $title = 'commerce.delete';
-
 
     public function setUp()
     {
         $abandonedCartId = (int)$this->getOption('id', 0);
-        $abandonedCart = $this->adapter->getObject('AbandonedCartOrder', ['id' => $abandonedCartId]);
+        $abandonedCart = $this->adapter->getObject('AbandonedCartSchedule', ['id' => $abandonedCartId]);
 
         $section = new SimpleSection($this->commerce, [
             'title' => $this->title
@@ -31,11 +30,11 @@ class Delete extends Page
                 'title' => 'commerce.delete'
             ]);
             $widget->setRecord($abandonedCart);
-            $widget->setClassKey('AbandonedCartOrder');
-            $widget->setFormAction($this->adapter->makeAdminUrl('abandonedcarts/delete', ['id' => $abandonedCart->get('id')]));
+            $widget->setClassKey('AbandonedCartSchedule');
+            $widget->setFormAction($this->adapter->makeAdminUrl('abandonedcarts/schedule/delete', ['id' => $abandonedCart->get('id')]));
             $widget->setUp();
         } else {
-            $widget = (new TextWidget($this->commerce, ['text' => 'Abandoned cart not found.']))->setUp();
+            $widget = (new TextWidget($this->commerce, ['text' => 'Abandoned cart schedule not found.']))->setUp();
         }
 
         $section->addWidget($widget);

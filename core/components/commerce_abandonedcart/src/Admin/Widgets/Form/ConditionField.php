@@ -33,7 +33,7 @@ class ConditionField extends Field
 
     public function getHTML()
     {
-        return $this->commerce->twig->render('admin/widgets/fields/condition.twig', ['field' => $this]);
+        return $this->commerce->twig->render('abandonedcart/admin/widgets/fields/condition.twig', ['field' => $this]);
     }
 
     public function getValueAsArray()

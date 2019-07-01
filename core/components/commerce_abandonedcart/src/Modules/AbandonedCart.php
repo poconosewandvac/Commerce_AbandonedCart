@@ -88,6 +88,11 @@ class AbandonedCart extends BaseModule {
         }
     }
 
+    /**
+     * Adds reports into Commerce
+     *
+     * @param Reports $event
+     */
     public function addReports(Reports $event)
     {
         $event->addReport(new \PoconoSewVac\AbandonedCart\Reports\Users($this->commerce));
@@ -188,6 +193,11 @@ class AbandonedCart extends BaseModule {
         $generator->addPage('abandonedcarts/customers', \PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Customers\Overview::class);
         $generator->addPage('abandonedcarts/customers/update', \PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Customers\Update::class);
         $generator->addPage('abandonedcarts/customers/delete', \PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Customers\Delete::class);
+
+        $generator->addPage('abandonedcarts/schedule', \PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Schedule\Overview::class);
+        $generator->addPage('abandonedcarts/schedule/create', \PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Schedule\Create::class);
+        $generator->addPage('abandonedcarts/schedule/update', \PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Schedule\Update::class);
+        $generator->addPage('abandonedcarts/schedule/delete', \PoconoSewVac\AbandonedCart\Admin\Modules\AbandonedCart\Schedule\Delete::class);
     }
 
     public function loadMenuItem(TopNavMenuEvent $event)
@@ -211,7 +221,13 @@ class AbandonedCart extends BaseModule {
                     'key' => 'abandonedcarts/customers',
                     'icon' => 'icon icon-user',
                     'link' => $this->adapter->makeAdminUrl('abandonedcarts/customers')
-                ]
+                ],
+                [
+                    'name' => $this->adapter->lexicon('commerce_abandonedcart.schedule'),
+                    'key' => 'abandonedcarts/schedule',
+                    'icon' => 'icon icon-calendar',
+                    'link' => $this->adapter->makeAdminUrl('abandonedcarts/schedule')
+                ],
             ]
         ]], 3);
 
@@ -251,6 +267,12 @@ class AbandonedCart extends BaseModule {
         return $fields;
     }
 
+    /**
+     * @param $array
+     * @param $values
+     * @param $offset
+     * @return array
+     */
     private function insertInArray($array, $values, $offset) {
         return array_slice($array, 0, $offset, true) + $values + array_slice($array, $offset, NULL, true);
     }
