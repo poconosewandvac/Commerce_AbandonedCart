@@ -39,4 +39,17 @@ class CartRepository extends Repository
             'order' => $order->get('id')
         ]);
     }
+
+    /**
+     * Gets pending abandoned cart orders
+     *
+     * @return array|\comSimpleObject[]|\xPDOObject[]|null
+     */
+    public function getPending()
+    {
+        return $this->adapter->getCollection($this->classKey, [
+            'converted' => false,
+            'removed' => false,
+        ]);
+    }
 }

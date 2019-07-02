@@ -7,8 +7,6 @@ use modmore\Commerce\Events\Admin\TopNavMenu as TopNavMenuEvent;
 use modmore\Commerce\Events\Reports;
 use modmore\Commerce\Modules\BaseModule;
 use modmore\Commerce\Admin\Widgets\Form\SelectField;
-use PoconoSewVac\AbandonedCart\Admin\Widgets\Form\MessageScheduleField;
-use PoconoSewVac\AbandonedCart\Admin\Widgets\Form\Validation\MessageScheduleTime;
 use PoconoSewVac\AbandonedCart\Repositories\CartRepository;
 use PoconoSewVac\AbandonedCart\Repositories\UserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -254,14 +252,6 @@ class AbandonedCart extends BaseModule {
                 ]
             ],
             'default' => '\Commerce::EVENT_ORDER_PAYMENT_RECEIVED',
-        ]);
-
-        $fields[] = new MessageScheduleField($this->commerce, [
-            'label' => $this->adapter->lexicon('commerce_abandonedcart.schedule'),
-            'description' => $this->adapter->lexicon('commerce_abandonedcart.schedule_desc'),
-            'name' => 'properties[schedule]',
-            'value' => $module->getProperty('schedule'),
-            'validation' => [ new MessageScheduleTime() ],
         ]);
 
         return $fields;
