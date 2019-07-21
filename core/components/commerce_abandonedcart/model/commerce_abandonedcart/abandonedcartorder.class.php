@@ -16,7 +16,7 @@ class AbandonedCartOrder extends comSimpleObject
     /**
      * Gets the abandoned cart user
      *
-     * @return \xPDOSimpleObject|null
+     * @return \AbandonedCartUser|null
      */
     public function getUser()
     {
@@ -26,7 +26,7 @@ class AbandonedCartOrder extends comSimpleObject
     /**
      * Gets the abandoned cart order
      *
-     * @return xPDOSimpleObject|null
+     * @return \comOrder|null
      */
     public function getOrder()
     {

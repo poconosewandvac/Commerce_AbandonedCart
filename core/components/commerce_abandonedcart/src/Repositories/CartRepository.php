@@ -43,7 +43,7 @@ class CartRepository extends Repository
     /**
      * Gets pending abandoned cart orders
      *
-     * @return array|\comSimpleObject[]|\xPDOObject[]|null
+     * @return \AbandonedCartOrder|null
      */
     public function getPending()
     {

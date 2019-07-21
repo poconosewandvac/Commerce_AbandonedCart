@@ -8,7 +8,7 @@ use PoconoSewVac\AbandonedCart\Repositories\CartRepository;
  * Class Runner
  * @package PoconoSewVac\AbandonedCart\Cron
  */
-final class Runner
+final class ScheduledRunner implements Runnable
 {
     /**
      * @var \Commerce
@@ -34,8 +34,15 @@ final class Runner
     {
         $cartRepository = new CartRepository($this->commerce);
 
-        $pending = $cartRepository->getPending();
-        foreach ($pending as $order) {
+        /** @var \AbandonedCartOrder[] $carts */
+        $carts = $cartRepository->getPending();
+        foreach ($carts as $cart) {
+            $user = $cart->getUser();
+
+            if (!$user->isSubscribed()) {
+                $cart->remove();
+                continue;
+            }
         }
     }
 }
