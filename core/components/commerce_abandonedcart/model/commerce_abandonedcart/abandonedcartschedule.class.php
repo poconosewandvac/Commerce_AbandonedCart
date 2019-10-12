@@ -58,7 +58,6 @@ class AbandonedCartSchedule extends comSimpleObject
                 continue;
             } else {
                 $this->adapter->log(4, '[AbandonedCart] Cart "' . $cart->get('id') . '" failed conditional for schedule ' . $this->get('id'));
-                echo 'CHECK FAILED!';
                 return false;
             }
         }
