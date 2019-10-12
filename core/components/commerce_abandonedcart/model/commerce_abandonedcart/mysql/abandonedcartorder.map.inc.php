@@ -23,7 +23,6 @@ $xpdo_meta_map['AbandonedCartOrder']= array (
   array (
     'user' => NULL,
     'order' => NULL,
-    'msg_count' => 0,
     'converted' => 0,
     'added_on' => NULL,
     'converted_on' => NULL,
@@ -46,14 +45,6 @@ $xpdo_meta_map['AbandonedCartOrder']= array (
       'precision' => '10',
       'phptype' => 'int',
       'null' => false,
-    ),
-    'msg_count' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '10',
-      'phptype' => 'int',
-      'null' => false,
-      'default' => 0,
     ),
     'converted' => 
     array (

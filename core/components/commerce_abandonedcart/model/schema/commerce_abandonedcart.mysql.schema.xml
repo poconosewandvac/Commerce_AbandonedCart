@@ -19,7 +19,6 @@
     <object class="AbandonedCartOrder" table="commerce_abandoned_cart_order" extends="comSimpleObject">
         <field key="user" dbtype="int" precision="10" phptype="int" null="false" />
         <field key="order" dbtype="int" precision="10" phptype="int" null="false" />
-        <field key="msg_count" dbtype="int" precision="10" phptype="int" null="false" default="0" />
         <field key="converted" dbtype="tinyint" precision="1" phptype="boolean" null="false" default="0" />
 
         <field key="added_on" dbtype="int" precision="10" phptype="int" null="false" />
@@ -51,5 +50,15 @@
         <index alias="removed" name="removed" primary="false" unique="false" type="BTREE">
             <column key="removed" length="" collation="A" null="false" />
         </index>
+    </object>
+
+    <object class="AbandonedCartScheduleSent" table="commerce_abandoned_cart_schedule_sent" extends="comSimpleObject">
+        <field key="order" dbtype="int" precision="10" phptype="int" null="false" />
+        <field key="schedule" dbtype="int" precision="10" phptype="int" null="false" />
+        <field key="sent" dbtype="tinyint" precision="1" phptype="boolean" null="false" default="0" />
+        <field key="sent_on" formatter="datetime" dbtype="int" precision="20" phptype="int" null="false" default="0" />
+
+        <aggregate alias="Order" class="AbandonedCartOrder" local="order" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Schedule" class="AbandonedCartSchedule" local="schedule" foreign="id" cardinality="one" owner="foreign" />
     </object>
 </model>

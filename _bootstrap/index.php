@@ -113,6 +113,7 @@ $modx->addPackage('commerce_abandonedcart', $componentPath . '/core/components/c
 $manager->createObjectContainer('AbandonedCartOrder');
 $manager->createObjectContainer('AbandonedCartUser');
 $manager->createObjectContainer('AbandonedCartSchedule');
+$manager->createObjectContainer('AbandonedCartScheduleSent');
 
 // Clear the cache
 $modx->cacheManager->refresh();
