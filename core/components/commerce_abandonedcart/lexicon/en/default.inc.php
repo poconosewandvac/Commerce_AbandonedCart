@@ -8,7 +8,7 @@ $_lang['commerce_abandonedcart.description'] = 'Automatically send messages to c
 $_lang['commerce_abandonedcart.converted_on_method'] = 'Converted On Method';
 $_lang['commerce_abandonedcart.converted_on_method_desc'] = 'Configures when the abandoned cart is marked as converted. This may vary depending on what you sell with your shop and what payment methods you utilize.';
 $_lang['commerce_abandonedcart.converted_on_method_thank_you'] = 'Thank You Step';
-$_lang['commerce_abandonedcart.converted_on_method_payment_received'] = 'Payment Received';
+$_lang['commerce_abandonedcart.converted_on_method_state_cart_to_processing'] = 'Order Moved to Processing';
 
 $_lang['commerce_abandonedcart.add_message'] = 'Add Scheduled Message';
 $_lang['commerce_abandonedcart.update_message'] = 'Update Scheduled Message';

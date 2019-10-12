@@ -81,8 +81,8 @@ class AbandonedCart extends BaseModule {
         $markConvertedOn = constant($this->getConfig('converted_on_method'));
         if ($markConvertedOn === \Commerce::EVENT_CHECKOUT_AFTER_STEP) {
             $dispatcher->addListener(\Commerce::EVENT_CHECKOUT_AFTER_STEP, [$this, 'convertAbandonedCartThankYou']);
-        } else if ($markConvertedOn === \Commerce::EVENT_ORDER_PAYMENT_RECEIVED) {
-            $dispatcher->addListener(\Commerce::EVENT_ORDER_PAYMENT_RECEIVED, [$this, 'convertAbandonedCartPaymentReceived']);
+        } else if ($markConvertedOn === \Commerce::EVENT_STATE_CART_TO_PROCESSING) {
+            $dispatcher->addListener(\Commerce::EVENT_STATE_CART_TO_PROCESSING, [$this, 'convertAbandonedCartToProcessing']);
         }
     }
 
@@ -160,7 +160,7 @@ class AbandonedCart extends BaseModule {
      * @param \modmore\Commerce\Events\Payment $event
      * @return void
      */
-    protected function convertAbandonedCartPaymentReceived(\modmore\Commerce\Events\Payment $event)
+    protected function convertAbandonedCartToProcessing(\modmore\Commerce\Events\Payment $event)
     {
         $this->convertAbandonedCart($event->getOrder());
     }
@@ -247,11 +247,11 @@ class AbandonedCart extends BaseModule {
                     'value' => '\Commerce::EVENT_CHECKOUT_AFTER_STEP',
                 ],
                 [
-                    'label' => $this->adapter->lexicon('commerce_abandonedcart.converted_on_method_payment_received'),
-                    'value' => '\Commerce::EVENT_ORDER_PAYMENT_RECEIVED',
+                    'label' => $this->adapter->lexicon('commerce_abandonedcart.converted_on_method_state_cart_to_processing'),
+                    'value' => '\Commerce::EVENT_STATE_CART_TO_PROCESSING',
                 ]
             ],
-            'default' => '\Commerce::EVENT_ORDER_PAYMENT_RECEIVED',
+            'default' => '\Commerce::EVENT_STATE_CART_TO_PROCESSING',
         ]);
 
         return $fields;
