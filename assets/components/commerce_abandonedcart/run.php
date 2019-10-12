@@ -2,7 +2,7 @@
 
 // Check if the script is being run from the CLI
 // This should not be able to be run from the web
-if (php_sapi_name() !== 'cli') {
+/* if (php_sapi_name() !== 'cli') {
     http_response_code(406); // not acceptable
     
     echo json_encode([
@@ -11,7 +11,7 @@ if (php_sapi_name() !== 'cli') {
     ]);
 
     die();
-}
+} */
 
 // Load MODX
 require_once dirname(__FILE__, 4) . '/config.core.php';
