@@ -1,6 +1,6 @@
 <?php
 
-use PoconoSewVac\AbandonedCart\Services\CartConditions;
+use PoconoSewVac\AbandonedCart\Services\CartCondition;
 
 /**
  * Abandoned Cart for Commerce.
@@ -22,9 +22,58 @@ class AbandonedCartSchedule extends comSimpleObject
      */
     public function conditionsMet(\AbandonedCartOrder $cart)
     {
-        $conditions = new CartConditions($this, $cart);
+        // Check if message has been sent
+        $sentFlag = $this->adapter->getObject('AbandonedCartScheduleSent', [
+            'order' => $cart->get('id'),
+            'schedule' => $this->get('id'),
+            'sent' => 1
+        ]);
 
-        return $conditions->areMet();
+        if ($sentFlag) {
+            return false;
+        }
+
+        // Check if time is valid
+        $sendTime = strtotime($this->get('send_time'), $cart->get('added_on'));
+        if ($sendTime === false) {
+            $this->adapter->log(1, '[AbandonedCart] Invalid time passed to strtotime "' . $sendTime . '" for schedule ' . $this->get('id'));
+            return false;
+        }
+
+        if ($sendTime >= time()) {
+            return false;
+        }
+
+        // Check if anything should be checked
+        if (!$this->hasConditions()) {
+            return true;
+        }
+
+        $conditionals = $this->get('conditions');
+        foreach ($conditionals as $conditional) {
+            $condition = new CartCondition($cart, $conditional);
+            
+            if ($condition->check()) {
+                $this->adapter->log(4, '[AbandonedCart] Cart "' . $cart->get('id') . '" passed conditional for schedule ' . $this->get('id'));
+                continue;
+            } else {
+                $this->adapter->log(4, '[AbandonedCart] Cart "' . $cart->get('id') . '" failed conditional for schedule ' . $this->get('id'));
+                echo 'CHECK FAILED!';
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if schedule has any conditional logic of when to send
+     * 
+     * @return bool
+     */
+    public function hasConditions()
+    {
+        return (bool) count($this->get('conditions'));
     }
 
     /**
@@ -56,6 +105,13 @@ class AbandonedCartSchedule extends comSimpleObject
             'subject' => $this->get('subject'),
         ]);
 
-        return $message->save() && $message->send();
+        /** @var \AbandonedCartScheduleSent $sentFlag */
+        $sentFlag = $this->adapter->newObject('AbandonedCartScheduleSent');
+        $sentFlag->fromArray([
+            'order' => $cart->get('id'),
+            'schedule' => $this->get('id')
+        ]);
+
+        return $message->save() && $message->send() && $sentFlag->send();
     }
 }

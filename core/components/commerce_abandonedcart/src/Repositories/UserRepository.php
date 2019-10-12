@@ -25,8 +25,8 @@ class UserRepository extends Repository
 
         $q = $this->adapter->newQuery($this->classKey);
         $q->where([
-            ['user:=' => $user],
-            ['OR:email:=' => $email]
+            'user' => $user,
+            'email' => $email
         ]);
 
         return $this->adapter->getObject($this->classKey, $q);
@@ -36,7 +36,7 @@ class UserRepository extends Repository
      * Add a user from an order
      *
      * @param \comOrder $order
-     * @return void
+     * @return \AbandonedCartUser
      */
     public function addFromOrder(\comOrder $order)
     {
@@ -49,5 +49,7 @@ class UserRepository extends Repository
             'email' => $address->get('email')
         ]);
         $user->save();
+
+        return $user;
     }
 }

@@ -5,12 +5,12 @@ namespace PoconoSewVac\AbandonedCart\Services;
 use modmore\Commerce\Services\Countries;
 
 /**
- * Class CartConditions
+ * Class CartCondition
  * This class effectively reimplements modmore\Commerce\Taxes\Condition, but for abandoned carts
  * 
  * @package PoconoSewVac\AbandonedCart\Services
  */
-class CartConditions
+class CartCondition
 {
     protected $field = '';
     protected $condition = 'equals';
@@ -28,16 +28,15 @@ class CartConditions
     private $cart;
 
     /**
-     * CartConditions constructor
+     * CartCondition constructor
      * 
      * @param \AbandonedCartSchedule conditionals
      * @param \AbandonedCartOrder cart instance to check
+     * @param array dsl condition
      */
-    public function __construct(\AbandonedCartSchedule $schedule, \comOrder $cart)
+    public function __construct(\AbandonedCartOrder $cart, array $dsl)
     {
-        $this->schedule = $schedule;
         $this->cart = $cart;
-        $dsl = $this->schedule->get('conditions');
 
         if (array_key_exists('field', $dsl)) {
             $this->field = trim($dsl['field']);
@@ -69,8 +68,9 @@ class CartConditions
      * 
      * @return bool
      */
-    public function areMet()
+    public function check()
     {
+        // Check order fields
         $order = $this->cart->getOrder();
 
         if (array_key_exists($this->field, $order->_fieldMeta)) {
@@ -93,7 +93,7 @@ class CartConditions
         return $this->checkValue('');
     }
 
-    private function checkValue($actualValue)
+    public function checkValue($actualValue)
     {
         if (!is_numeric($actualValue) && !is_array($actualValue)) {
             $actualValue = trim(strtoupper($actualValue));

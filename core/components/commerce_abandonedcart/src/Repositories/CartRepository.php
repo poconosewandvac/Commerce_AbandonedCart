@@ -14,13 +14,14 @@ class CartRepository extends Repository
      * Add an abandoned cart order for an order
      *
      * @param \comOrder $order
+     * @param \AbandonedCartUser $user
      * @return void
      */
-    public function addFromOrder(\comOrder $order)
+    public function addFromOrder(\comOrder $order, \AbandonedCartUser $user)
     {
         $abandonedCartOrder = $this->adapter->newObject($this->classKey);
         $abandonedCartOrder->fromArray([
-            'user' => $order->get('user'),
+            'user' => $user->get('id'), // we want to reference the abandoned cart user here, NOT modUser!
             'order' => $order->get('id'),
             'added_on' => time(),
         ]);

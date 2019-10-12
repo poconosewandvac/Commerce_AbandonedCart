@@ -31,6 +31,11 @@ final class ScheduledRunner implements Runnable
         $this->adapter = $commerce->adapter;
     }
 
+    /**
+     * Get all scheduled messages
+     * 
+     * @returns array
+     */
     private function getSchedule()
     {
         $schedule = $this->adapter->getCollection('AbandonedCartSchedule', [
@@ -47,14 +52,16 @@ final class ScheduledRunner implements Runnable
      */
     private function removeUnsubscribed($carts)
     {
-        return array_map(function($cart) {
+        return array_filter($carts, function($cart) {
+            $user = $cart->getUser();
+
             if ($user->isSubscribed()) {
                 return true;
             } else {
                 $cart->remove();
                 return false;
             }
-        }, $carts);
+        });
     }
 
     public function run()
@@ -69,17 +76,22 @@ final class ScheduledRunner implements Runnable
 
         /** @var \AbandonedCartOrder[] $carts */
         $carts = $cartRepository->getPending();
+        if (!$carts) {
+            $this->adapter->log(4, '[AbandonedCart] No abandoned carts found in queue.');
+            return;
+        }
+
         $carts = $this->removeUnsubscribed($carts);
 
         foreach ($carts as $cart) {
             $order = $cart->getOrder();
 
             foreach ($schedule as $scheduledMessage) {
-                if ($scheduledMessage->conditionsMetForCart($cart)) {
+                if ($scheduledMessage->conditionsMet($cart)) {
                     if ($scheduledMessage->send($cart)) {
-                        $this->adapter->log(4, '[AbandonedCart] Sent message ' . $schedule->get('id') . ' for order with ID ' . $order->get('id'));
+                        $this->adapter->log(4, '[AbandonedCart] Sent message ' . $scheduledMessage->get('id') . ' for order with ID ' . $order->get('id'));
                     } else {
-                        $this->adapter->log(1, '[AbandonedCart] Failed to send message ' . $schedule->get('id') . ' for order with ID ' . $order->get('id'));
+                        $this->adapter->log(1, '[AbandonedCart] Failed to send message ' . $scheduledMessage->get('id') . ' for order with ID ' . $order->get('id'));
                     }
 
                     // Prevent multiple messages from being sent at once

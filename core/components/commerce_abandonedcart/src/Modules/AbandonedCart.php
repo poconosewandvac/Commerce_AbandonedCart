@@ -112,7 +112,7 @@ class AbandonedCart extends BaseModule {
         // Get the abandoned cart user
         $user = $this->userRepository->getByOrder($order);
         if (!$user) {
-            $this->userRepository->addFromOrder($order);
+            $user = $this->userRepository->addFromOrder($order);
         }
 
         // Make sure user is not unsubscribed
@@ -125,7 +125,7 @@ class AbandonedCart extends BaseModule {
         $abandonedCartOrder = $this->cartRepository->getByOrder($order);
         if ($abandonedCartOrder) return;
 
-        $this->cartRepository->addFromOrder($order);
+        $this->cartRepository->addFromOrder($order, $user);
         $order->log($this->adapter->lexicon('commerce_abandonedcart.added_abandonedcart', [
             'id' => $order->get('id'),
         ]), false);
