@@ -53,4 +53,24 @@ class CartRepository extends Repository
             'removed' => false,
         ]);
     }
+
+    /**
+     * Gets an abandoned order by comOrder secret for restoring
+     *
+     * @param string $secret
+     * @return \AbandonedCartOrder|null
+     */
+    public function getBySecret($secret)
+    {
+        $query = $this->adapter->newQuery($this->classKey);
+        $query->innerJoin('comOrder', 'comOrder', ['AbandonedCartOrder.`order` = comOrder.id']);
+        $query->where([
+            'comOrder.class_key' => 'comCartOrder',
+            'comOrder.test' => $this->commerce->isTestMode(),
+            'comOrder.secret' => $secret,
+            'AbandonedCartOrder.removed' => false,
+        ]);
+
+        return $this->adapter->getObject($this->classKey, $query);
+    }
 }

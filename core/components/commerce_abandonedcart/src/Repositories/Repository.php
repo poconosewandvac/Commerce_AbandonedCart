@@ -2,7 +2,6 @@
 
 namespace PoconoSewVac\AbandonedCart\Repositories;
 
-
 abstract class Repository
 {
     /** @var \Commerce $commerce */

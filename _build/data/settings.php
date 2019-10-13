@@ -1,8 +1,8 @@
 <?php
 
 return [
-//    'some_setting' => [
-//        'area' => 'general',
-//        'value' => 'some_value',
-//    ],
+    'web_cron' => [
+        'area' => 'general',
+        'value' => true,
+    ],
 ];
