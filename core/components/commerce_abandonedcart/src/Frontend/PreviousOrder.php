@@ -48,7 +48,6 @@ final class PreviousOrder
         $cartRepository = new CartRepository($commerce);
 
         if ($cart = $cartRepository->getBySecret($secret)) {
-            echo 'found!';
             return new self($commerce, $cart);
         }
 
