@@ -26,7 +26,25 @@ class UserRepository extends Repository
         $q = $this->adapter->newQuery($this->classKey);
         $q->where([
             'user' => $user,
-            'email' => $email
+            'email' => $email,
+            'removed' => false
+        ]);
+
+        return $this->adapter->getObject($this->classKey, $q);
+    }
+
+    /**
+     * Get user by email address
+     *
+     * @param $email
+     * @return \AbandonedCartUser|null
+     */
+    public function getByEmail($email)
+    {
+        $q = $this->adapter->newQuery($this->classKey);
+        $q->where([
+            'email' => $email,
+            'removed' => false
         ]);
 
         return $this->adapter->getObject($this->classKey, $q);

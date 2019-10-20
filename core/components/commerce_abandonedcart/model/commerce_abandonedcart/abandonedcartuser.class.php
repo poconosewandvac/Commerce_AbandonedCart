@@ -42,4 +42,15 @@ class AbandonedCartUser extends comSimpleObject
     {
         return (bool) $this->get('subscribed');
     }
+
+    /**
+     * Unsubscribe user from Abandoned Cart emails
+     *
+     * @return void
+     */
+    public function unsubscribe()
+    {
+        $this->set('subscribed', false);
+        $this->save();
+    }
 }
