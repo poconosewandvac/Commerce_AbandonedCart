@@ -73,9 +73,4 @@ class AbandonedCartOrder extends comSimpleObject
         $this->set('converted', true);
         $this->set('converted_on', time());
     }
-
-    public function meetsConditions(Conditions $conditions)
-    {
-
-    }
 }
