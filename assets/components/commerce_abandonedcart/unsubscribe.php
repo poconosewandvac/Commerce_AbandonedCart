@@ -23,7 +23,7 @@ $commerce = $modx->getService('commerce', 'Commerce', $commercePath, ['mode' => 
 $corePath = $modx->getOption('commerce_abandonedcart.core_path', null, $modx->getOption('core_path') . 'components/commerce_abandonedcart');
 require_once $corePath . 'vendor/autoload.php';
 
-$userRepository = new PoconoSewVac\AbandonedCart\Repositories\UserRepository($commerce)
+$userRepository = new PoconoSewVac\AbandonedCart\Repositories\UserRepository($commerce);
 $user = $userRepository->getByEmail($_GET['email']);
 
 $user->unsubscribe();

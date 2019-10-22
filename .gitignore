@@ -1,3 +1,7 @@
 .idea/
 _packages/
 config.core.php
+
+# OS specific
+.DS_Store
+Thumbs.db
