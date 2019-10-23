@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+{#
+    This template is completely customizable to fit your business needs.
+
+    Available placeholders:
+
+    - email: raw unescaped email address
+    - user: MODX user (if available)
+    - abandonedcart_user: Abandoned Cart user object. Contains: email, subscribed.
+    - site_url: base site URL
+    - errors: array of any errors that occured during the request
+    - messages: array of any messages that were outputted during the request (success/information)
+#}
+
+<html>
+    <head>
+        <title>Are you sure you want to unsubscribe?</title>
+    </head>
+
+    <body>
+        <h1>Unsubscribe from Abandoned Cart Emails</h1>
+
+        {% for error in errors %}
+            <p>Error: {{ error|e }}</p>
+        {% endfor %}
+
+        {% for message in messages %}
+            <p>{{ message|e }}</p>
+        {% endfor %}
+
+        <form method="POST" action="">
+            <label for="email">Email to Unsubscribe</label>
+            <input id="email" name="email" type="email" placeholder="Email address" value="{{ email|e }}">
+
+            {#
+                This "unsubscribe" parameter tells the system to actually unsubscribe the user
+                Without this parameter, no unsubscribing is actually done.
+
+                This can be passed in via POST or GET
+            #}
+            <input type="hidden" name="unsubscribe" value="1">
+            <input type="submit" value="Unsubscribe">
+        </form>
+    </body>
+</html>

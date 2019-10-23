@@ -17,15 +17,15 @@ switch($options[xPDOTransport::PACKAGE_ACTION]) {
         }
         $modx->log($level, '- MODX Revolution 2.7.0+: ' . $modxVersion['full_version']);
 
-        // Check for PHP 7.0 or higher
+        // Check for PHP 7.1 or higher
         $level = xPDO::LOG_LEVEL_INFO;
-        if (version_compare(PHP_VERSION, '7.0.0') < 0) {
+        if (version_compare(PHP_VERSION, '7.1.0') < 0) {
             $level = xPDO::LOG_LEVEL_ERROR;
             $success = false;
         }
-        $modx->log($level, '- PHP version 7.0+: ' . PHP_VERSION);
+        $modx->log($level, '- PHP version 7.1+: ' . PHP_VERSION);
 
-        // Check for Commerce 1.0.0+
+        // Check for Commerce 1.1.0+
         $corePath = $modx->getOption('commerce.core_path', null, $modx->getOption('core_path') . 'components/commerce/');
         $corePath .= 'model/commerce/';
         $installed = true;
@@ -39,12 +39,12 @@ switch($options[xPDOTransport::PACKAGE_ACTION]) {
         }
         $modx->log($level, '- Commerce installed: ' . ($installed ? 'yes' : 'no'));
         if ($commerce instanceof Commerce) {
-            $installed = version_compare((string)$commerce->version, '1.0.0-pl', '>=');
+            $installed = version_compare((string)$commerce->version, '1.1.0-rc1', '>=');
             $level = $installed ? xPDO::LOG_LEVEL_INFO : xPDO::LOG_LEVEL_ERROR;
             if (!$installed) {
                 $success = false;
             }
-            $modx->log($level, '- Commerce version 1.0.0+: ' . (string)$commerce->version);
+            $modx->log($level, '- Commerce version 1.1.0+: ' . (string)$commerce->version);
         }
 
 

@@ -58,3 +58,8 @@ $_lang['commerce_abandonedcart.converted_abandonedcart'] = 'Converted abandoned 
 // Reports
 $_lang['commerce_abandonedcart.user_report'] = 'Abandoned Cart Customers';
 $_lang['commerce_abandonedcart.user_report_desc'] = 'Export a list of abandoned cart customers.';
+
+// Templates
+$_lang['commerce_abandonedcart.unsubscribed'] = 'You have been unsubscribed from Abandoned Cart emails.';
+$_lang['commerce_abandonedcart.not_found'] = 'Email address entered was not found.';
+$_lang['commerce_abandonedcart.already_unsubscribed'] = 'Email address entered has already been unsubscribed.';
