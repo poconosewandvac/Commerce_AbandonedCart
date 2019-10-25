@@ -4,6 +4,7 @@ namespace PoconoSewVac\AbandonedCart\Frontend;
 
 /**
  * Class MessageList
+ * @package PoconoSewVac\AbandonedCart\Frontend
  */
 class MessageList
 {
