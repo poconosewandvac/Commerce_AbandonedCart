@@ -48,6 +48,34 @@ This example runs the cronjob script every 5 minutes.
 
 By default, the cronjob is allowed to run via a web request (to enable the usage of web-based cron services). It is recommended to disable web access for security by changing the following system setting in MODX to "No": `commerce_abandonedcart.web_cron`. This will prevent requests from the web from running the script to send abandoned cart emails.
 
+## Creating a Message Schedule
+
+You can create and schedule abandoned cart messages to send out to customers via the Abandoned Carts interface in the Commerce dashboard. This is located under the "Abandoned Carts" tab, then "Schedule" on the left-side navigation. 
+
+![Abandoned Carts Schedule Dashboard](docs/schedule-dashboard.png)
+
+On this page, you can view & edit previously configured messages as well as create a new one. To create a new scheduled message, click "Add Scheduled Message".
+
+### Schedule Fields
+
+When creating a scheduled message, you can fill out the following fields:
+
+**From**: The email address the message is sent from.
+
+**Subject**: The email subject line the message uses.
+
+**Conditions**: Conditions on when to send a message to specific customers
+
+**Content**: Message to send (twig - similar to how status change actions work). This module comes with an example email for testing: `{% extends "abandonedcart/emails/standard.twig" %}`
+
+### Conditions
+
+Conditions allow you to only send a scheduled message when the specified conditions are met. This can be useful if you only want to send an abandoned cart customer in a specific region or if their cart is over a certain amount.
+
+This module uses the standard conditions field that Commerce uses for tax rules. This supports checking order and address fields in the conditions.
+
+For example, if you only wanted to send an abandoned cart message to orders over $150, you could set the field name to "total", condition to "is greater than", and value field "15000". **Note that all monetary values in conditions are in cents!** 
+
 ## License
 
 [MIT](https://github.com/poconosewandvac/Commerce_AbandonedCart/blob/master/core/components/commerce_abandonedcart/docs/license.txt)
