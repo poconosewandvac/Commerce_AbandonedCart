@@ -137,12 +137,7 @@ class Grid extends GridWidget
         $userId = $abandonedCartUser->get('user');
 
         // User column
-        if ($abandonedCartUser->get('user') > 0) {
-            $editUserLink = $this->adapter->getOption('manager_url') . '?a=security/user/update&id=' . $userId;
-            $item['user'] = '<a href="' . $editUserLink . '">' . $userId . '</a>';
-        } else {
-            $item['user'] = $this->adapter->lexicon('commerce_abandonedcart.guest');
-        }
+        $item['user'] = $this->getUserData($userId);
 
         // Subscription column
         if ($abandonedCartUser->isSubscribed()) {
@@ -164,5 +159,31 @@ class Grid extends GridWidget
             ->setIcon('icon-trash');
 
         return $item;
+    }
+
+    /**
+     * Gets MODX user information for customer if available
+     *
+     * @param $userId
+     * @return mixed|string|null
+     * @throws \modmore\Commerce\Exceptions\ViewException
+     */
+    private function getUserData($userId)
+    {
+        $user = $this->adapter->getObject('modUser', $userId);
+        $profile = $user ? $user->getOne('Profile') : null;
+
+        if ($userId > 0 && (!$user || !$profile)) {
+            return $this->adapter->lexicon('commerce_abandonedcart.unknown_customer');
+        } else if ($userId === 0 && (!$user || !$profile)) {
+            return $this->adapter->lexicon('commerce_abandonedcart.guest');
+        }
+
+        $view = $this->commerce->view();
+        return $view->render('abandonedcart/admin/widgets/customer-info.twig', [
+            'user' => $user->toArray(),
+            'profile' => $profile->toArray(),
+            'link' => $this->adapter->getOption('manager_url') . '?a=security/user/update&id=' . $userId,
+        ]);
     }
 }

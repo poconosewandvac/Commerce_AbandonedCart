@@ -22,7 +22,7 @@ class Form extends FormWidget
 
         $fields[] = new NumberField($this->commerce, [
             'name' => 'user',
-            'label' => $this->adapter->lexicon('commerce_abandonedcart.customer'),
+            'label' => $this->adapter->lexicon('commerce_abandonedcart.customer_id'),
         ]);
 
         $fields[] = new TextField($this->commerce, [

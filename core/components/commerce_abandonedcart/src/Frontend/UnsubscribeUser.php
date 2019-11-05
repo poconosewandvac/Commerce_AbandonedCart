@@ -106,7 +106,7 @@ final class UnsubscribeUser
     public function unsubscribe()
     {
         $this->user->unsubscribe();
-        $this->messages->add($this->adapter->lexicon('commerce_abandonedcart.unsubscribed'));
+        $this->messages->add($this->adapter->lexicon('commerce_abandonedcart.unsubscribed_from_emails'));
     }
 
     /**

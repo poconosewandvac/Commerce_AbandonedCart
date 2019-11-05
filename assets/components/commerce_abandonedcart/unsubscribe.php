@@ -30,4 +30,3 @@ if ($unsubscribeUser->canBeUnsubscribed()) {
 }
 
 echo $unsubscribeUser->view();
-die();

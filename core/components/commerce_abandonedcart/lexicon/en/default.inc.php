@@ -34,6 +34,8 @@ $_lang['commerce_abandonedcart.customer_type'] = 'Customer Type';
 $_lang['commerce_abandonedcart.guest'] = 'Guest';
 $_lang['commerce_abandonedcart.registered'] = 'Registered';
 $_lang['commerce_abandonedcart.customer'] = 'Customer';
+$_lang['commerce_abandonedcart.unknown_customer'] = 'Unknown Customer';
+$_lang['commerce_abandonedcart.customer_id'] = 'Customer ID';
 $_lang['commerce_abandonedcart.customers'] = 'Customers';
 $_lang['commerce_abandonedcart.carts'] = 'Carts';
 $_lang['commerce_abandonedcart.search_by_customer'] = 'Search by Customer';
@@ -60,6 +62,6 @@ $_lang['commerce_abandonedcart.user_report'] = 'Abandoned Cart Customers';
 $_lang['commerce_abandonedcart.user_report_desc'] = 'Export a list of abandoned cart customers.';
 
 // Templates
-$_lang['commerce_abandonedcart.unsubscribed'] = 'You have been unsubscribed from Abandoned Cart emails.';
+$_lang['commerce_abandonedcart.unsubscribed_from_emails'] = 'You have been unsubscribed from Abandoned Cart emails.';
 $_lang['commerce_abandonedcart.not_found'] = 'Email address entered was not found.';
 $_lang['commerce_abandonedcart.already_unsubscribed'] = 'Email address entered has already been unsubscribed.';

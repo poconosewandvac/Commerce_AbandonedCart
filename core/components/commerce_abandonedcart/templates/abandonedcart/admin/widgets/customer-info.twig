@@ -1,0 +1,13 @@
+{#
+    Available placeholders:
+
+    - profile: All fields available in the MODX user profile object
+    - user: All fields available in the MODX user object
+    - link: Link to edit the MODX user in the MODX manager
+#}
+
+<div>
+    <a href="{{ link }}">
+        <span>{{ profile.fullname }} ({{ user.id }})</span>
+    </a>
+</div>
