@@ -6,6 +6,8 @@ use PoconoSewVac\AbandonedCart\Repositories\UserRepository;
 
 /**
  * Class Unsubscribe
+ * Unsubscribe a user from receiving messages
+ *
  * @package PoconoSewVac\AbandonedCart\Frontend
  */
 final class UnsubscribeUser
@@ -63,7 +65,7 @@ final class UnsubscribeUser
      * @param $email
      * @return self
      */
-    public static function fromEmail(\Commerce $commerce, $email)
+    public static function fromEmail(\Commerce $commerce, $email): self
     {
         $userRepository = new UserRepository($commerce);
         $user = $userRepository->getByEmail($email);
@@ -76,7 +78,7 @@ final class UnsubscribeUser
      *
      * @return bool
      */
-    public function canBeUnsubscribed()
+    public function canBeUnsubscribed(): bool
     {
         if (strlen((string) $this->email) < 1) {
             // Email address not entered, don't display any error
@@ -103,7 +105,7 @@ final class UnsubscribeUser
      *
      * @return void
      */
-    public function unsubscribe()
+    public function unsubscribe(): void
     {
         $this->user->unsubscribe();
         $this->messages->add($this->adapter->lexicon('commerce_abandonedcart.unsubscribed_from_emails'));
@@ -115,7 +117,7 @@ final class UnsubscribeUser
      * @return string
      * @throws \modmore\Commerce\Exceptions\ViewException
      */
-    public function view()
+    public function view(): string
     {
         $view = $this->commerce->view();
         $baseUser = $this->user ? $this->user->getUser() : null;

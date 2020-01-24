@@ -6,6 +6,8 @@ use PoconoSewVac\AbandonedCart\Repositories\CartRepository;
 
 /**
  * Class PreviousOrder
+ * Restore a previous order object to a user's session
+ *
  * @package PoconoSewVac\AbandonedCart\Frontend
  */
 final class PreviousOrder
@@ -43,7 +45,7 @@ final class PreviousOrder
      * @param string $secret
      * @return self|null
      */
-    public static function fromSecret(\Commerce $commerce, $secret)
+    public static function fromSecret(\Commerce $commerce, $secret): ?self
     {
         $cartRepository = new CartRepository($commerce);
 
@@ -61,7 +63,7 @@ final class PreviousOrder
      * @param \comOrder $order
      * @return void
      */
-    private function persistSecret(\comOrder $order)
+    private function persistSecret(\comOrder $order): void
     {
         $id = $order->get('id');
         $_SESSION[\comOrder::SESSION_NAME] = $id;
@@ -89,7 +91,7 @@ final class PreviousOrder
      *
      * @return \comOrder
      */
-    public function restore()
+    public function restore(): \comOrder
     {
         $order = $this->cart->getOrder();
         $this->persistSecret($order);

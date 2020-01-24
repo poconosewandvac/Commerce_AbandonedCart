@@ -7,6 +7,8 @@ use PoconoSewVac\AbandonedCart\Services\Conditions;
 
 /**
  * Class Runner
+ * Run any scheduled messages
+ *
  * @package PoconoSewVac\AbandonedCart\Cron
  */
 final class ScheduledRunner implements Runnable
@@ -34,9 +36,9 @@ final class ScheduledRunner implements Runnable
     /**
      * Get all scheduled messages
      * 
-     * @returns array
+     * @return array
      */
-    private function getSchedule()
+    private function getSchedule(): array
     {
         $schedule = $this->adapter->getCollection('AbandonedCartSchedule', [
             'removed' => false
@@ -50,7 +52,7 @@ final class ScheduledRunner implements Runnable
      * 
      * @param \AbandonedCartOrder[] $carts
      */
-    private function removeUnsubscribed($carts)
+    private function removeUnsubscribed($carts): bool
     {
         return array_filter($carts, function($cart) {
             $user = $cart->getUser();
@@ -64,6 +66,9 @@ final class ScheduledRunner implements Runnable
         });
     }
 
+    /**
+     * @inheritDoc
+     */
     public function run()
     {
         $cartRepository = new CartRepository($this->commerce);

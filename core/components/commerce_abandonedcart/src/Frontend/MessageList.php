@@ -30,7 +30,7 @@ class MessageList
     /**
      * @param string $message
      */
-    public function add($message)
+    public function add($message): void
     {
         $this->data[] = $message;
     }
@@ -38,7 +38,7 @@ class MessageList
     /**
      * @return array
      */
-    public function getAll()
+    public function getAll(): array
     {
         return $this->data;
     }
@@ -46,7 +46,7 @@ class MessageList
     /**
      * @return void
      */
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
