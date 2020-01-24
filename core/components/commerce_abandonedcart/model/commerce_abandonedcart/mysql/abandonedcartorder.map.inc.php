@@ -27,7 +27,7 @@ $xpdo_meta_map['AbandonedCartOrder']= array (
     'added_on' => NULL,
     'converted_on' => NULL,
     'removed' => 0,
-    'removed_on' => 0,
+    'removed_on' => NULL,
     'removed_by' => 0,
   ),
   'fieldMeta' => 
@@ -56,16 +56,14 @@ $xpdo_meta_map['AbandonedCartOrder']= array (
     ),
     'added_on' => 
     array (
-      'dbtype' => 'int',
-      'precision' => '10',
-      'phptype' => 'int',
+      'dbtype' => 'datetime',
+      'phptype' => 'datetime',
       'null' => false,
     ),
     'converted_on' => 
     array (
-      'dbtype' => 'int',
-      'precision' => '10',
-      'phptype' => 'int',
+      'dbtype' => 'datetime',
+      'phptype' => 'datetime',
       'null' => true,
     ),
     'removed' => 
@@ -78,12 +76,9 @@ $xpdo_meta_map['AbandonedCartOrder']= array (
     ),
     'removed_on' => 
     array (
-      'formatter' => 'datetime',
-      'dbtype' => 'int',
-      'precision' => '20',
-      'phptype' => 'int',
-      'null' => false,
-      'default' => 0,
+      'dbtype' => 'datetime',
+      'phptype' => 'datetime',
+      'null' => true,
     ),
     'removed_by' => 
     array (

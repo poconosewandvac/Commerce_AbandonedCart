@@ -27,7 +27,7 @@ $xpdo_meta_map['AbandonedCartSchedule']= array (
     'send_time' => '',
     'conditions' => '',
     'removed' => 0,
-    'removed_on' => 0,
+    'removed_on' => NULL,
     'removed_by' => 0,
   ),
   'fieldMeta' => 
@@ -81,12 +81,9 @@ $xpdo_meta_map['AbandonedCartSchedule']= array (
     ),
     'removed_on' => 
     array (
-      'formatter' => 'datetime',
-      'dbtype' => 'int',
-      'precision' => '20',
-      'phptype' => 'int',
-      'null' => false,
-      'default' => 0,
+      'dbtype' => 'datetime',
+      'phptype' => 'datetime',
+      'null' => true,
     ),
     'removed_by' => 
     array (

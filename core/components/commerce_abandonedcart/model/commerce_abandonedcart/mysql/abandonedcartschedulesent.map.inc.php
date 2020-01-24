@@ -24,7 +24,7 @@ $xpdo_meta_map['AbandonedCartScheduleSent']= array (
     'order' => NULL,
     'schedule' => NULL,
     'sent' => 0,
-    'sent_on' => 0,
+    'sent_on' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -52,12 +52,9 @@ $xpdo_meta_map['AbandonedCartScheduleSent']= array (
     ),
     'sent_on' => 
     array (
-      'formatter' => 'datetime',
-      'dbtype' => 'int',
-      'precision' => '20',
-      'phptype' => 'int',
-      'null' => false,
-      'default' => 0,
+      'dbtype' => 'datetime',
+      'phptype' => 'datetime',
+      'null' => true,
     ),
   ),
   'aggregates' => 
