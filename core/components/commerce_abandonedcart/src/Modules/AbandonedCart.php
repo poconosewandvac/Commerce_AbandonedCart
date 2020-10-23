@@ -160,7 +160,7 @@ class AbandonedCart extends BaseModule {
      * @param \modmore\Commerce\Events\Payment $event
      * @return void
      */
-    protected function convertAbandonedCartToProcessing(\modmore\Commerce\Events\Payment $event)
+    public function convertAbandonedCartToProcessing(\modmore\Commerce\Events\Payment $event)
     {
         $this->convertAbandonedCart($event->getOrder());
     }
@@ -171,7 +171,7 @@ class AbandonedCart extends BaseModule {
      * @param \modmore\Commerce\Events\Checkout $event
      * @return void
      */
-    protected function convertAbandonedCartThankYou(\modmore\Commerce\Events\Checkout $event)
+    public function convertAbandonedCartThankYou(\modmore\Commerce\Events\Checkout $event)
     {
         $step = $event->getStep();
         if (!($step instanceof ThankYou)) {

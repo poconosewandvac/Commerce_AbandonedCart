@@ -1,5 +1,5 @@
 ++ Abandoned Cart for Commerce
 
-++ Released on
+++ v1.0.0-pl - released on 10/23/2020
 ++++++++++++++++++++++++++
-- First release
+- Initiial release

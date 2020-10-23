@@ -52,7 +52,7 @@ final class ScheduledRunner implements Runnable
      * 
      * @param \AbandonedCartOrder[] $carts
      */
-    private function removeUnsubscribed($carts): bool
+    private function removeUnsubscribed($carts): array
     {
         return array_filter($carts, function($cart) {
             $user = $cart->getUser();

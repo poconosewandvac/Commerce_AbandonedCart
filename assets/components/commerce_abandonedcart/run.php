@@ -38,7 +38,7 @@ $commerce = $modx->getService('commerce', 'Commerce', $commercePath, ['mode' => 
 
 // Load AbandonedCart
 $corePath = $modx->getOption('commerce_abandonedcart.core_path', null, $modx->getOption('core_path') . 'components/commerce_abandonedcart');
-require_once $corePath . 'vendor/autoload.php';
+require_once $corePath . '/vendor/autoload.php';
 
 $scheduledRunner = new \PoconoSewVac\AbandonedCart\Cron\ScheduledRunner($commerce);
 $scheduledRunner->run();
