@@ -19,6 +19,7 @@ if ($transport->xpdo) {
             $logLevel = $modx->setLogLevel(modX::LOG_LEVEL_ERROR);
 
             $objects = [
+                'AbandonedCartUser',
                 'AbandonedCartOrder',
                 'AbandonedCartSchedule',
                 'AbandonedCartScheduleSent',
