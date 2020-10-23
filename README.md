@@ -1,4 +1,4 @@
-# Abandoned Cart for Commerce (WIP)
+# Abandoned Cart for Commerce
 
 ![Abandoned Carts Dashboard](docs/dashboard.png)
 
