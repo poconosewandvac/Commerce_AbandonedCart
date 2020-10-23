@@ -69,6 +69,34 @@ $builder->registerNamespace(PKG_NAMESPACE,false,true,'{core_path}components/'.PK
 
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in namespace.'); flush();
 
+$builder->package->put(
+    [
+        'source' => $sources['source_core'],
+        'target' => "return MODX_CORE_PATH . 'components/';",
+    ],
+    [
+        xPDOTransport::ABORT_INSTALL_ON_VEHICLE_FAIL => true,
+        'vehicle_class' => 'xPDOFileVehicle',
+        'validate' => [
+            [
+                'type' => 'php',
+                'source' => $sources['validators'] . 'requirements.script.php'
+            ]
+        ],
+        'resolve' => array(
+            array(
+                'type' => 'php',
+                'source' => $sources['resolvers'] . 'loadmodules.resolver.php',
+            ),
+            array(
+                'type' => 'php',
+                'source' => $sources['resolvers'] . 'tables.resolver.php',
+            ),
+        )
+    ]
+);
+$modx->log(modX::LOG_LEVEL_INFO,'Packaged in core, requirements validator, and module loading resolver.'); flush();
+
 /* Settings */
 $settings = include $sources['data'].'transport.settings.php';
 $attributes= array(
@@ -86,7 +114,7 @@ if (is_array($settings)) {
 }
 
 // Add the validator to check server requirements
-$vehicle->validate('php', array('source' => $sources['validators'] . 'requirements.script.php'));
+// $vehicle->validate('php', array('source' => $sources['validators'] . 'requirements.script.php'));
 
 //$vehicle->resolve('file',array(
 //    'source' => $sources['source_assets'],
@@ -96,9 +124,9 @@ $vehicle->resolve('file',array(
     'source' => $sources['source_core'],
     'target' => "return MODX_CORE_PATH . 'components/';",
 ));
-$vehicle->resolve('php',array(
+/*$vehicle->resolve('php',array(
     'source' => $sources['resolvers'] . 'loadmodules.resolver.php',
-));
+));*/
 $builder->putVehicle($vehicle);
 
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in resolvers.'); flush();
