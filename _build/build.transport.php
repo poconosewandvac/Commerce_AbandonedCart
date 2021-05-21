@@ -23,7 +23,7 @@ if (!defined('MOREPROVIDER_BUILD')) {
     /* define version */
     define('PKG_NAME', 'Commerce_AbandonedCart');
     define('PKG_NAMESPACE', 'commerce_abandonedcart');
-    define('PKG_VERSION', '1.0.0');
+    define('PKG_VERSION', '1.0.1');
     define('PKG_RELEASE', 'pl');
 
     /* load modx */
@@ -113,17 +113,24 @@ if (is_array($settings)) {
     unset($settings,$setting,$attributes);
 }
 
+$category = $modx->newObject('modCategory');
+$category->set('category', PKG_NAMESPACE);
+
+$vehicle = $builder->createVehicle($category, $attributes);
+
 // Add the validator to check server requirements
 // $vehicle->validate('php', array('source' => $sources['validators'] . 'requirements.script.php'));
 
-//$vehicle->resolve('file',array(
-//    'source' => $sources['source_assets'],
-//    'target' => "return MODX_ASSETS_PATH . 'components/';",
-//));
 $vehicle->resolve('file',array(
-    'source' => $sources['source_core'],
-    'target' => "return MODX_CORE_PATH . 'components/';",
+    'source' => $sources['source_assets'],
+    'target' => "return MODX_ASSETS_PATH . 'components/';",
 ));
+$modx->log(modX::LOG_LEVEL_INFO,'Packaged in assets.'); flush();
+
+//$vehicle->resolve('file',array(
+//    'source' => $sources['source_core'],
+//    'target' => "return MODX_CORE_PATH . 'components/';",
+//));
 /*$vehicle->resolve('php',array(
     'source' => $sources['resolvers'] . 'loadmodules.resolver.php',
 ));*/
