@@ -69,13 +69,13 @@ class AbandonedCart extends BaseModule {
         // Add template path to twig
         /** @var ChainLoader $loader */
         $root = dirname(__DIR__, 2);
-        $loader = $this->commerce->twig->getLoader();
-        $loader->addLoader(new FilesystemLoader($root . '/templates/'));
+        $this->commerce->view()->addTemplatesPath($root . '/templates/');
 
         $dispatcher->addListener(\Commerce::EVENT_DASHBOARD_INIT_GENERATOR, [$this, 'loadPages']);
         $dispatcher->addListener(\Commerce::EVENT_DASHBOARD_GET_MENU, [$this, 'loadMenuItem']);
         $dispatcher->addListener(\Commerce::EVENT_DASHBOARD_REPORTS_GET_REPORTS, [$this, 'addReports']);
         $dispatcher->addListener(\Commerce::EVENT_ORDER_ADDRESS_ADDED, [$this, 'addAbandonedCart']);
+        $dispatcher->addListener(\Commerce::EVENT_ORDER_MESSAGE_PLACEHOLDERS, [$this, 'addMessagePlaceholders']);
 
         // Determine which event to use for converted on
         $markConvertedOn = constant($this->getConfig('converted_on_method'));
@@ -179,6 +179,18 @@ class AbandonedCart extends BaseModule {
         }
 
         $this->convertAbandonedCart($event->getOrder());
+    }
+
+    /**
+     * Set placeholder URL in Abandoned Cart email for restoring the cart
+     * @param \modmore\Commerce\Events\MessagePlaceholders $event
+     */
+    public function addMessagePlaceholders(\modmore\Commerce\Events\MessagePlaceholders $event)
+    {
+        $baseUrl = rtrim($this->adapter->getOption('site_url'), '/') . $this->adapter->getOption('assets_url');
+        $identifier = $event->getOrder()->get('secret');
+
+        $event->setPlaceholder('restore_link', $baseUrl . 'components/commerce_abandonedcart/cart.php?secret=' . urlencode($identifier));
     }
 
     public function loadPages(GeneratorEvent $event)
