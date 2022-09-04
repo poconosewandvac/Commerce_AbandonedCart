@@ -1,8 +1,10 @@
 ++ Abandoned Cart for Commerce
 
-++ v1.0.1-pl - released on 05/21/2021
+++ v1.0.1-pl - released on 09/04/2022
 ++++++++++++++++++++++++++
 - Fix converting carts and create assets
+- Fix Twig render view issues in admin and with emails
+- Add "restore_link" Twig variable to emails to restore the customer's cart
 
 ++ v1.0.0-pl - released on 10/23/2020
 ++++++++++++++++++++++++++
