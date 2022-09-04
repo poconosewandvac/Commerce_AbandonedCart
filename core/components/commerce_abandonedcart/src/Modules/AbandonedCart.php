@@ -160,9 +160,9 @@ class AbandonedCart extends BaseModule {
      * @param \modmore\Commerce\Events\Payment $event
      * @return void
      */
-    public function convertAbandonedCartToProcessing(\modmore\Commerce\Events\Payment $event)
+    public function convertAbandonedCartToProcessing(\modmore\Commerce\Events\OrderState $state)
     {
-        $this->convertAbandonedCart($event->getOrder());
+        $this->convertAbandonedCart($state->getOrder());
     }
 
     /**
