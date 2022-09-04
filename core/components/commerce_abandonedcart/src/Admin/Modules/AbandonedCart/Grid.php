@@ -230,6 +230,6 @@ class Grid extends GridWidget
 
     public function render(array $phs)
     {
-        return $this->commerce->twig->render('abandonedcart/admin/widgets/abandoned-cart-grid.twig', $phs);
+        return $this->commerce->view()->render('abandonedcart/admin/widgets/abandoned-cart-grid.twig', $phs);
     }
 }
