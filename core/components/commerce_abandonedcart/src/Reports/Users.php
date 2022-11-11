@@ -77,7 +77,7 @@ class Users extends BaseReport
         $headers[] = new Header('zip', 'zip', true);
         $headers[] = new Header('fax', 'fax', true);
         $headers[] = new Header('photo', 'photo', true);
-        $headers[] = new Header('website', 'photo', true);
+        $headers[] = new Header('website', 'website', true);
 
         return $headers;
     }
