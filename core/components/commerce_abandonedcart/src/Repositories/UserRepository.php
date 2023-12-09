@@ -20,7 +20,7 @@ class UserRepository extends Repository
     {
         /** @var \comOrderAddress $address */
         $address = $order->getBillingAddress();
-        $email = $address->get('email');
+        $email = $address ? $address->get('email') : '';
         $user = $order->get('user');
 
         $q = $this->adapter->newQuery($this->classKey);
@@ -64,7 +64,7 @@ class UserRepository extends Repository
         $user = $this->adapter->newObject($this->classKey);
         $user->fromArray([
             'user' => $order->get('user'),
-            'email' => $address->get('email')
+            'email' => $address ? $address->get('email') : '',
         ]);
         $user->save();
 
