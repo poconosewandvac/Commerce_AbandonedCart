@@ -1,5 +1,9 @@
 ++ Abandoned Cart for Commerce
 
+++ v1.0.2-pl - released on 09/12/2022
+++++++++++++++++++++++++++
+- Fix 500 error on checkout page if billing address is missing
+
 ++ v1.0.1-pl - released on 09/04/2022
 ++++++++++++++++++++++++++
 - Fix converting carts and create assets
